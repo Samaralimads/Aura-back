@@ -17,10 +17,35 @@ public func configure(_ app: Application) async throws {
         database: Environment.get("DB_NAME") ?? "vapor_database"
     ), as: .mysql)
 
-    app.migrations.add(CreateTodo())
 
+    //MARK: - Migrations Profile
+   //    app.migrations.add(CreateUser())
+   //    app.migrations.add(CreateAdmin())
+   //    app.migrations.add(CreateBadge())
+   //    app.migrations.add(CreateUserBadge())
+   //
+       //MARK: - Migrations Practice
+   //    app.migrations.add(CreateMeditation())
+   //    app.migrations.add(CreateUserMeditation())
+   //    app.migrations.add(CreateBreathing())
+   //    app.migrations.add(CreateUserBreathing())
+   //
+       //MARK: - Migrations Challenge
+   //    app.migrations.add(CreateChallenge())
+   //    app.migrations.add(CreateUserChallenge())
+   //    app.migrations.add(CreateTask())
+   //    app.migrations.add(CreateUserTask())
+   //
+       //MARK: - Migrations Mood tracking
+   //    app.migrations.add(CreateMood())
+   //    app.migrations.add(CreateEmotion())
+   //    app.migrations.add(CreateSleep())
+   //    app.migrations.add(CreateReason())
+   //    app.migrations.add(CreateJournal())
+   //    app.migrations.add(CreateDay())
+    
+    
     app.views.use(.leaf)
 
-    // register routes
     try routes(app)
 }
