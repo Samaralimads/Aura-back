@@ -21,7 +21,7 @@
 ---
 
 ```
-Aura-Server/
+Aura-back/
 ├── Package.swift
 ├── Package.resolved
 ├── Public/
@@ -53,6 +53,7 @@ Aura-Server/
 
 ### Étapes
 1. Cloner le dépôt :
+
    ```bash
    git clone https://github.com/ton-utilisateur/aura-back.git
    cd aura-back
