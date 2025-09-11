@@ -1,0 +1,94 @@
+# =======================
+# 🗑 Fichiers macOS
+# =======================
+.DS_Store
+*.swp
+*.swo
+
+# =======================
+# 📦 Swift/Vapor
+# =======================
+.build/
+Packages/
+.swiftpm/
+*.xcodeproj/
+*.xcworkspace/
+xcuserdata/
+DerivedData/
+*.profraw
+*.profdata
+
+# =======================
+# 🗃 Fichiers de base de données (MariaDB/MySQL)
+# =======================
+# Fichiers de dump SQL locaux
+*.sql
+*.sql.gz
+*.mysql
+*.mysqldump
+# Fichiers de socket MySQL/MariaDB
+/mysql.sock
+/tmp/mysql.sock
+# Fichiers de configuration locale
+my.cnf
+mysql.cnf
+*.cnf
+
+# =======================
+# 🔑 Configuration et secrets
+# =======================
+.env
+.env.*
+!.env.example
+.env.local
+.env.development
+.env.test
+# Clés et certificats locaux
+*.pem
+*.key
+*.crt
+
+# =======================
+# 📦 Dépôts et caches
+# =======================
+.vscode/
+.idea/
+logs/
+tmp/
+coverage/
+docs/build/
+docs/.build/
+/Log/
+
+# =======================
+# 📄 Fichiers de logs
+# =======================
+*.log
+log/
+logs/
+
+# =======================
+# 📄 Fichiers générés par Fluent/MariaDB
+# =======================
+Database/migrations/*.log
+Database/migrations/*.backup
+Database/seeds/*.log
+
+# =======================
+# 📄 Fichiers SQLite (si utilisé en parallèle)
+# =======================
+*.sqlite
+*.sqlite3
+*.db
+
+# =======================
+# 📄 Fichiers Xcode
+# =======================
+Aura.xcodeproj/
+*.xcodeproj/
+*.xcworkspace/
+
+# =======================
+# 📄 Fichiers de dépendances SwiftPM
+# =======================
+Package.resolved
