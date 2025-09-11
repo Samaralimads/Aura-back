@@ -19,6 +19,10 @@ final class Reason: Model, Content, @unchecked Sendable {
     
     @Field(key: "image")
     var image: String?
+    
+    // 1–N: one reason can be linked to many days
+    @Children(for: \.$reason)
+    var days: [Day]
 
     init() {}
     

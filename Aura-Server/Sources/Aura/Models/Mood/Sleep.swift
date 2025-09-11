@@ -19,6 +19,10 @@ final class Sleep: Model, Content, @unchecked Sendable {
     
     @Field(key: "image")
     var image: String?
+    
+    // 1–N: one sleep can be linked to many days
+    @Children(for: \.$sleep)
+    var days: [Day]
 
     init() {}
     init(id: UUID? = nil, name: String, image: String? = nil) {

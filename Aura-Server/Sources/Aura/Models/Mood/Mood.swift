@@ -18,14 +18,22 @@ final class Mood: Model, Content, @unchecked Sendable  {
     var name: String
     
     @Field(key: "image")
-    var image: String?
+    var image: String
     
     @Field(key: "color")
-    var color: String?
+    var color: String
 
+    // 1–N: one mood can be linked to  many emotions
+    @Children(for: \.$mood)
+    var emotions: [Emotion]
+    
+    // 1–N: one mood can be linked to many days
+    @Children(for: \.$mood)
+    var days: [Day]
+    
     init() {}
     
-    init(id: UUID? = nil, name: String, image: String? = nil, color: String? = nil) {
+    init(id: UUID? = nil, name: String, image: String, color: String) {
         self.id = id
         self.name = name
         self.image = image

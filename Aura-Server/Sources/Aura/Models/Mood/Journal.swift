@@ -16,6 +16,10 @@ final class Journal: Model, Content, @unchecked Sendable {
     
     @Field(key: "field")
     var field: String
+    
+    // 1–N: one journal can be linked to many days???
+    @Children(for: \.$journal)
+    var days: [Day]
 
     init() {}
     

@@ -14,21 +14,22 @@ final class Badge: Model, Content, @unchecked Sendable {
     @ID(key: .id)
     var id: UUID?
     
+    @Field(key: "name")
+    var name: String
+    
     @Field(key: "image")
     var image: String?
     
     @Field(key: "description")
     var description: String?
     
-    @Field(key: "name")
-    var name: String
-
-    @Children(for: \.$badge)
-    var userBadges: [UserBadge]
-
+    @Siblings(through: UserBadge.self, from: \.$badge, to: \.$user)
+    var users: [User]
+    
+    
     init() {}
     
-    init(id: UUID? = nil, name: String, image: String? = nil, description: String? = nil) {
+    init(id: UUID? = nil, name: String, image: String, description: String) {
         self.id = id
         self.name = name
         self.image = image
