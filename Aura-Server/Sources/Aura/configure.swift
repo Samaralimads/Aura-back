@@ -19,31 +19,32 @@ public func configure(_ app: Application) async throws {
 
 
     //MARK: - Migrations Profile
-   //    app.migrations.add(CreateUser())
-   //    app.migrations.add(CreateAdmin())
-   //    app.migrations.add(CreateBadge())
-   //    app.migrations.add(CreateUserBadge())
-   //
-       //MARK: - Migrations Practice
-   //    app.migrations.add(CreateMeditation())
-   //    app.migrations.add(CreateUserMeditation())
-   //    app.migrations.add(CreateBreathing())
-   //    app.migrations.add(CreateUserBreathing())
-   //
-       //MARK: - Migrations Challenge
-   //    app.migrations.add(CreateChallenge())
-   //    app.migrations.add(CreateUserChallenge())
-   //    app.migrations.add(CreateTask())
-   //    app.migrations.add(CreateUserTask())
-   //
-       //MARK: - Migrations Mood tracking
-   //    app.migrations.add(CreateMood())
-   //    app.migrations.add(CreateEmotion())
-   //    app.migrations.add(CreateSleep())
-   //    app.migrations.add(CreateReason())
-   //    app.migrations.add(CreateJournal())
-   //    app.migrations.add(CreateDay())
+       app.migrations.add(CreateUser())
+       app.migrations.add(CreateAdmin())
+       app.migrations.add(CreateBadge())
+       app.migrations.add(CreateUserBadge())
+   
+      // MARK: - Migrations Practice
+       app.migrations.add(CreateMeditation())
+       app.migrations.add(CreateUserMeditation())
+       app.migrations.add(CreateBreathing())
+       app.migrations.add(CreateUserBreathing())
+   
+      // MARK: - Migrations Challenge
+       app.migrations.add(CreateChallenge())
+       app.migrations.add(CreateUserChallenge())
+       app.migrations.add(CreateTask())
+       app.migrations.add(CreateUserTask())
+   
+      // MARK: - Migrations Mood tracking
+       app.migrations.add(CreateMood())
+       app.migrations.add(CreateEmotion())
+       app.migrations.add(CreateSleep())
+       app.migrations.add(CreateReason())
+       app.migrations.add(CreateJournal())
+       app.migrations.add(CreateDay())
     
+    try await app.autoMigrate()
     
     app.views.use(.leaf)
 
