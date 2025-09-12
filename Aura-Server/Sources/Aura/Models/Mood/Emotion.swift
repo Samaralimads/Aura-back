@@ -17,9 +17,6 @@ final class Emotion: Model, Content, @unchecked Sendable{
     @Field(key: "name")
     var name: String
     
-    @Field(key: "image")
-    var image: String?
-    
     // N–1: many emotions belongs to exactly one mood
     @Parent(key: "mood_id")
       var mood: Mood
@@ -30,10 +27,9 @@ final class Emotion: Model, Content, @unchecked Sendable{
 
     init() {}
     
-    init(id: UUID? = nil, name: String, image: String? = nil, moodID: Mood.IDValue) {
+    init(id: UUID? = nil, name: String, moodID: Mood.IDValue) {
         self.id = id
         self.name = name
-        self.image = image
         self.$mood.id = moodID
     }
 }
