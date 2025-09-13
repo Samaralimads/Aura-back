@@ -16,20 +16,14 @@ struct DayCreateDTO: Content {
     var journalID: UUID?
 }
 
-struct DayUpdateDTO: Content {
-    var moodID: UUID?
-    var emotionID: UUID?
-    var sleepID: UUID?
-    var reasonID: UUID?
-    var journalID: UUID?
+struct DayResponse: Content {
+    let id: UUID?
+    let date: Date
+    let userID: UUID
+    let mood: MoodResponse
+    let emotion: EmotionResponse
+    let sleep: SleepResponse
+    let reason: ReasonResponse
+    let journal: JournalResponse
 }
 
-struct DayResponseDTO: Content {
-    var id: UUID?
-    var date: Date
-    var mood: Mood
-    var emotion: Emotion
-    var sleep: Sleep
-    var reason: Reason
-    var journal: Journal
-}
