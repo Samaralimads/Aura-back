@@ -3,12 +3,15 @@ import Fluent
 import FluentMySQLDriver
 import Leaf
 import Vapor
+import FluentSQLiteDriver
 
 // configures your application
 public func configure(_ app: Application) async throws {
     // uncomment to serve files from /Public folder
     // app.middleware.use(FileMiddleware(publicDirectory: app.directory.publicDirectory))
-
+    if app.environment == .testing {
+        app.databases.use(.sqlite(.memory), as: .sqlite)
+    }
     app.databases.use(DatabaseConfigurationFactory.mysql(
         hostname: Environment.get("DB_HOST") ?? "localhost",
         port: Environment.get("DB_PORT").flatMap(Int.init(_:)) ?? MySQLConfiguration.ianaPortNumber,
