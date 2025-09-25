@@ -12,7 +12,6 @@ struct CreateEmotion: AsyncMigration {
         try await db.schema(Emotion.schema)
             .id()
             .field("name", .string, .required)
-            .field("image", .string)
             .field("mood_id", .uuid, .required, .references(Mood.schema, .id, onDelete: .cascade))
             .create()
     }
