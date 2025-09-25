@@ -41,3 +41,16 @@ final class Breathing: Model, Content, @unchecked Sendable {
         self.description = description
     }
 }
+
+extension Breathing {
+    func toDTO() -> BreathingResponse {
+        BreathingResponse(
+            id: self.id,
+            type: self.type,
+            duration: self.duration,
+            image: self.image,
+            title: self.title,
+            description: self.description
+        )
+    }
+}
