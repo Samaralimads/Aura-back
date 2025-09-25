@@ -3,12 +3,18 @@ import Fluent
 import FluentMySQLDriver
 import Leaf
 import Vapor
+import FluentSQLiteDriver
 
 // configures your application
 public func configure(_ app: Application) async throws {
+
+    // uncomment to serve files from /Public folder
+ app.middleware.use(FileMiddleware(publicDirectory: app.directory.publicDirectory))
     
-    app.middleware.use(FileMiddleware(publicDirectory: app.directory.publicDirectory))
-    
+    if app.environment == .testing {
+        app.databases.use(.sqlite(.memory), as: .sqlite)
+    }
+
     app.databases.use(DatabaseConfigurationFactory.mysql(
         hostname: Environment.get("DB_HOST") ?? "localhost",
         port: Environment.get("DB_PORT").flatMap(Int.init(_:)) ?? MySQLConfiguration.ianaPortNumber,
@@ -16,7 +22,6 @@ public func configure(_ app: Application) async throws {
         password: Environment.get("DB_PASSWORD") ?? "vapor_password",
         database: Environment.get("DB_NAME") ?? "vapor_database"
     ), as: .mysql)
-    
     
     //MARK: - Migrations Profile
     app.migrations.add(CreateUser())
@@ -51,7 +56,6 @@ public func configure(_ app: Application) async throws {
     app.migrations.add(EmotionSeeds())
     
     try await app.autoMigrate()
-    
     app.views.use(.leaf)
     
     try routes(app)
