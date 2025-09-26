@@ -7,8 +7,18 @@
 
 import Vapor
 
-struct ReasonResponse: Content {
+struct ReasonCreateDTO: Content {
+    var name: String
+    var image: String
+}
+
+struct ReasonResponseDTO: Content {
     let id: UUID?
     let name: String
-    let image: String?
+    let image: String
+}
+
+struct ReasonUpdateDTO: Content {
+    var name: String?
+    var image: String?
 }

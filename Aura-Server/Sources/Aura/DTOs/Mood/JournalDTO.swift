@@ -7,7 +7,15 @@
 
 import Vapor
 
-struct JournalResponse: Content {
+struct JournalCreateDTO: Content {
+    let field: String
+}
+
+struct JournalResponseDTO: Content {
     let id: UUID?
     let field: String
+}
+
+struct JournalUpdateDTO: Content {
+    let field: String?
 }

@@ -7,8 +7,18 @@
 
 import Vapor
 
-struct SleepResponse: Content {
+struct SleepCreateDTO: Content {
+    var name: String
+    var image: String
+}
+
+struct SleepResponseDTO: Content {
     let id: UUID?
     let name: String
-    let image: String?
+    let image: String
+}
+
+struct SleepUpdateDTO: Content {
+    var name: String?
+    var image: String?
 }

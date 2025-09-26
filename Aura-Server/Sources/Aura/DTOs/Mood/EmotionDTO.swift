@@ -7,10 +7,21 @@
 
 import Vapor
 
-struct EmotionResponse: Content {
+struct EmotionCreateDTO: Content {
+    let name: String
+    let moodID: UUID
+}
+
+struct EmotionResponseDTO: Content {
     let id: UUID?
     let name: String
     let moodID: UUID
 }
+
+struct EmotionUpdateDTO: Content {
+    let name: String?
+    let moodID: UUID?
+}
+
 
 
