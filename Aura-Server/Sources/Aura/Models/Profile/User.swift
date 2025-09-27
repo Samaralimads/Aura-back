@@ -8,7 +8,7 @@
 import Vapor
 import Fluent
 
-final class User: Model, @unchecked Sendable {
+final class User: Model, @unchecked Sendable, Authenticatable {
     static let schema = "users"
     
     @ID(key: .id)
@@ -57,5 +57,13 @@ final class User: Model, @unchecked Sendable {
         self.password = password
         self.avatar = avatar
     }
+    
+    func toDTO() -> UserResponseDTO {
+        return UserResponseDTO(
+            id: self.id,
+            firstName: self.firstName,
+            email: self.email,
+            avatar: self.avatar
+        )
+    }
 }
-

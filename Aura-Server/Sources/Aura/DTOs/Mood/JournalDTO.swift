@@ -14,6 +14,11 @@ struct JournalCreateDTO: Content {
 struct JournalResponseDTO: Content {
     let id: UUID?
     let field: String
+
+    init(fromModel journal: Journal) {
+        self.id = journal.id
+        self.field = journal.field
+    }
 }
 
 struct JournalUpdateDTO: Content {

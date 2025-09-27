@@ -15,7 +15,13 @@ struct SleepCreateDTO: Content {
 struct SleepResponseDTO: Content {
     let id: UUID?
     let name: String
-    let image: String
+    let image: String?
+
+    init(fromModel sleep: Sleep) {
+        self.id = sleep.id
+        self.name = sleep.name
+        self.image = sleep.image
+    }
 }
 
 struct SleepUpdateDTO: Content {

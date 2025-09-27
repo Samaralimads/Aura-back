@@ -16,6 +16,12 @@ struct EmotionResponseDTO: Content {
     let id: UUID?
     let name: String
     let moodID: UUID
+
+    init(fromModel emotion: Emotion) {
+        self.id = emotion.id
+        self.name = emotion.name
+        self.moodID = emotion.$mood.id
+    }
 }
 
 struct EmotionUpdateDTO: Content {
