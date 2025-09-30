@@ -16,14 +16,31 @@ struct DayCreateDTO: Content {
     var journalID: UUID?
 }
 
-struct DayResponse: Content {
+struct DayResponseDTO: Content {
     let id: UUID?
     let date: Date
-    let userID: UUID
-    let mood: MoodResponse
-    let emotion: EmotionResponse
-    let sleep: SleepResponse
-    let reason: ReasonResponse
-    let journal: JournalResponse
+    let mood: String
+    let emotion: String
+    let sleep: String
+    let reason: String
+    let journal: String
+
+    init(fromModel day: Day) {
+        self.id = day.id
+        self.date = day.date
+        self.mood = day.mood.name
+        self.emotion = day.emotion.name
+        self.sleep = day.sleep.name
+        self.reason = day.reason.name
+        self.journal = day.journal.field
+    }
+}
+
+struct DayUpdateDTO: Content {
+    let moodID: UUID?
+    let emotionID: UUID?
+    let sleepID: UUID?
+    let reasonID: UUID?
+    let journalID: UUID?
 }
 

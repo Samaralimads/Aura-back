@@ -4,18 +4,19 @@ import FluentMySQLDriver
 import Leaf
 import Vapor
 import FluentSQLiteDriver
+import JWT
 
 // configures your application
 public func configure(_ app: Application) async throws {
 
     
     // uncomment to serve files from /Public folder
- app.middleware.use(FileMiddleware(publicDirectory: app.directory.publicDirectory))
+    app.middleware.use(FileMiddleware(publicDirectory: app.directory.publicDirectory))
     
     if app.environment == .testing {
         app.databases.use(.sqlite(.memory), as: .sqlite)
     }
-
+    
     app.databases.use(DatabaseConfigurationFactory.mysql(
         hostname: Environment.get("DB_HOST") ?? "127.0.0.1",
         port: Environment.get("DB_PORT").flatMap(Int.init) ?? 3306,
@@ -60,9 +61,15 @@ public func configure(_ app: Application) async throws {
     app.migrations.add(ReasonSeeds())
     app.migrations.add(EmotionSeeds())
     app.migrations.add(BreathingSeeds())
+    app.migrations.add(JournalSeeds())
+
     
     try await app.autoMigrate()
     app.views.use(.leaf)
+    
+    //MARK: - JWT Signer
+    let jwtKey = Environment.get("JWT_SECRET_KEY") ?? "dev_secret"
+    app.jwt.signers.use(.hs256(key: jwtKey))
     
     try routes(app)
 }
