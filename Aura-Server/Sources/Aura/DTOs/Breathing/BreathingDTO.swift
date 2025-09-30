@@ -9,36 +9,52 @@ import Fluent
 import Vapor
 
 struct CreateBreathingDTO: Content {
-    var type: String
-    var duration: Int
     var image: String
     var title: String
     var description: String
+    var indexOrder: Int
+    var inhaleD: Int
+    var holdD: Int
+    var exhaleD: Int
+    var audio: String?
+    var nbOfCycles: Int
     
     func toModel() -> Breathing {
         Breathing(
-            type: type,
-            duration: duration,
             image: image,
             title: title,
-            description: description
+            description: description,
+            indexOrder: indexOrder,
+            inhaleD: inhaleD,
+            holdD: holdD,
+            exhaleD: exhaleD,
+            audio: audio,
+            nbOfCycles: nbOfCycles
         )
     }
 }
 
 struct BreathingResponse: Content {
     var id: UUID?
-    var type: String
-    var duration: Int
     var image: String
     var title: String
     var description: String
+    var indexOrder: Int
+    var inhaleD: Int
+    var holdD: Int
+    var exhaleD: Int
+    var audio: String?
+    var nbOfCycles: Int
 }
 
 struct UpdateBreathingDTO: Content {
-    var type: String?
-    var duration: Int?
     var image: String?
     var title: String?
     var description: String?
+    var indexOrder: Int?
+    var inhaleD: Int?
+    var holdD: Int?
+    var exhaleD: Int?
+    var audio: String?
+    var nbOfCycles: Int?
 }
