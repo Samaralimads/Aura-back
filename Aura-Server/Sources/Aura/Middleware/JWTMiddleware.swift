@@ -23,7 +23,7 @@ final class JWTMiddleware: Middleware {
                             return request.eventLoop.future(error: Abort(.unauthorized, reason: "User not found"))
                         }
 
-                        request.auth.login(user) // 👈 Login actual User model
+                        request.auth.login(user)
                         return next.respond(to: request)
                     }
                 } catch {
