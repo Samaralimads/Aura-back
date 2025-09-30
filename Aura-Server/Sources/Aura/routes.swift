@@ -13,5 +13,6 @@ func routes(_ app: Application) throws {
 
 //    try app.register(collection: DayController())
     try app.register(collection: BreathingController())
+    try app.register(collection: UserBreathingController())
 
 }

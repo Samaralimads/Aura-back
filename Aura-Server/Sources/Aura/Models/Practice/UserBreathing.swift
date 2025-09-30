@@ -17,7 +17,7 @@ final class UserBreathing: Model, Content, @unchecked Sendable {
     @ID(key: .id)
     var id: UUID?
     
-    @Field(key: "respiration_date")
+    @Field(key: "date_respiration")
     var date: Date
     
     @Parent(key: "user_id")
@@ -35,3 +35,17 @@ final class UserBreathing: Model, Content, @unchecked Sendable {
         self.date = date
     }
 }
+
+extension UserBreathing {
+    func ToResponse() -> UserBreathingResponse {
+        UserBreathingResponse(
+            id: self.id!,
+            userID: self.user.id!,
+            breathingID: self.breathing.id!,
+            username: self.user.firstName,
+            breathingTitle: self.breathing.title,
+            date: self.date
+        )
+    }
+}
+

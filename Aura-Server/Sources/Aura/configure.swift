@@ -8,6 +8,7 @@ import FluentSQLiteDriver
 // configures your application
 public func configure(_ app: Application) async throws {
 
+    
     // uncomment to serve files from /Public folder
  app.middleware.use(FileMiddleware(publicDirectory: app.directory.publicDirectory))
     
@@ -16,11 +17,11 @@ public func configure(_ app: Application) async throws {
     }
 
     app.databases.use(DatabaseConfigurationFactory.mysql(
-        hostname: Environment.get("DB_HOST") ?? "localhost",
-        port: Environment.get("DB_PORT").flatMap(Int.init(_:)) ?? MySQLConfiguration.ianaPortNumber,
-        username: Environment.get("DB_USERNAME") ?? "vapor_username",
-        password: Environment.get("DB_PASSWORD") ?? "vapor_password",
-        database: Environment.get("DB_NAME") ?? "vapor_database"
+        hostname: Environment.get("DB_HOST") ?? "127.0.0.1",
+        port: Environment.get("DB_PORT").flatMap(Int.init) ?? 3306,
+        username: Environment.get("DB_USERNAME") ?? "aura",
+        password: Environment.get("DB_PASSWORD") ?? "aurapass",
+        database: Environment.get("DB_NAME") ?? "auradb"
     ), as: .mysql)
     
     //MARK: - Migrations Profile
@@ -33,6 +34,10 @@ public func configure(_ app: Application) async throws {
     app.migrations.add(CreateMeditation())
     app.migrations.add(CreateUserMeditation())
     app.migrations.add(CreateBreathing())
+    app.migrations.add(DeleteType())
+    app.migrations.add(AddField())
+    app.migrations.add(DeleteFieldDuration())
+    app.migrations.add(AddFieldNbOfCycles())   
     app.migrations.add(CreateUserBreathing())
     
     // MARK: - Migrations Challenge
@@ -54,6 +59,7 @@ public func configure(_ app: Application) async throws {
     app.migrations.add(MoodSeeds())
     app.migrations.add(ReasonSeeds())
     app.migrations.add(EmotionSeeds())
+    app.migrations.add(BreathingSeeds())
     
     try await app.autoMigrate()
     app.views.use(.leaf)

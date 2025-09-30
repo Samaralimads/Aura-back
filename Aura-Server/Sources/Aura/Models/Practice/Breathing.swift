@@ -13,12 +13,6 @@ final class Breathing: Model, Content, @unchecked Sendable {
     @ID(key: .id)
     var id: UUID?
     
-    @Field(key: "type")
-    var type: String
-    
-    @Field(key: "duration")
-    var duration: Int
-    
     @Field(key: "image")
     var image: String
     
@@ -27,30 +21,56 @@ final class Breathing: Model, Content, @unchecked Sendable {
     
     @Field(key: "description")
     var description: String
-    
+       
     @Siblings(through: UserBreathing.self, from: \.$breathing, to: \.$user)
     var users: [User]
     
-    init() {}
+    @Field(key: "indexOrder")
+    var indexOrder: Int
+       
+    @Field(key: "inhaleD")
+    var inhaleD: Int
+       
+    @Field(key: "holdD")
+    var holdD: Int
+       
+    @Field(key: "exhaleD")
+    var exhaleD: Int
+       
+    @OptionalField(key: "audio")
+    var audio: String?
     
-    init(type: String, duration: Int, image: String, title: String, description: String){
-        self.type = type
-        self.duration = duration
-        self.image = image
-        self.title = title
-        self.description = description
-    }
-}
+    @Field(key: "nbOfCycles")
+    var nbOfCycles: Int
+    
+    init() {}
+      
+      init(image: String, title: String, description: String, indexOrder: Int, inhaleD: Int, holdD: Int, exhaleD: Int, audio: String? = nil, nbOfCycles: Int){
+          self.image = image
+          self.title = title
+          self.description = description
+          self.indexOrder = indexOrder
+          self.inhaleD = inhaleD
+          self.holdD = holdD
+          self.exhaleD = exhaleD
+          self.audio = audio
+          self.nbOfCycles = nbOfCycles
+      }
+  }
 
-extension Breathing {
-    func toDTO() -> BreathingResponse {
-        BreathingResponse(
-            id: self.id,
-            type: self.type,
-            duration: self.duration,
-            image: self.image,
-            title: self.title,
-            description: self.description
-        )
-    }
-}
+  extension Breathing {
+      func toDTO() -> BreathingResponse {
+          BreathingResponse(
+              id: self.id,
+              image: self.image,
+              title: self.title,
+              description: self.description,
+              indexOrder: self.indexOrder,
+              inhaleD: self.inhaleD,
+              holdD: self.holdD,
+              exhaleD: self.exhaleD,
+              audio: self.audio,
+              nbOfCycles: self.nbOfCycles
+          )
+      }
+  }
