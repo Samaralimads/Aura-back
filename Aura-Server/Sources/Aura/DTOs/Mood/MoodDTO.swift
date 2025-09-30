@@ -7,17 +7,28 @@
 
 import Vapor
 
-struct MoodResponse: Content {
-    let id: UUID?
-    let name: String
-    let image: String
-    let color: String
+struct MoodCreateDTO: Content {
+    var name: String
+    var image: String
+    var color: String
 }
 
-struct MoodWithEmotionsResponse: Content {
+struct MoodResponseDTO: Content {
     let id: UUID?
     let name: String
     let image: String
     let color: String
-    let emotions: [EmotionResponse]
+
+    init(fromModel mood: Mood) {
+        self.id = mood.id
+        self.name = mood.name
+        self.image = mood.image
+        self.color = mood.color
+    }
+}
+
+struct MoodUpdateDTO: Content {
+    var name: String?
+    var image: String?
+    var color: String?
 }

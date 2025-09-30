@@ -7,8 +7,24 @@
 
 import Vapor
 
-struct ReasonResponse: Content {
+struct ReasonCreateDTO: Content {
+    var name: String
+    var image: String
+}
+
+struct ReasonResponseDTO: Content {
     let id: UUID?
     let name: String
     let image: String?
+
+    init(fromModel reason: Reason) {
+        self.id = reason.id
+        self.name = reason.name
+        self.image = reason.image
+    }
+}
+
+struct ReasonUpdateDTO: Content {
+    var name: String?
+    var image: String?
 }
