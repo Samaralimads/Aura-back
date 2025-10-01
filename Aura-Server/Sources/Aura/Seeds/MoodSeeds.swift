@@ -11,12 +11,12 @@ import Fluent
 struct MoodSeeds: AsyncMigration {
     func prepare(on db: any Database) async throws {
         try await [
-            Mood(name: "Bien", image: "bien.svg", color: "#FAD063"),
-            Mood(name: "Moyen", image: "moyen.svg", color: "#AAE3D1"),
-            Mood(name: "Mal", image: "mal.svg", color: "#CFAAE4"),
-            Mood(name: "Très Bien", image: "tres_bien.svg", color: "#EC6F4D"),
-            Mood(name: "Très Mal", image: "tres_mal.svg", color: "#D853AB"),
-            Mood(name: "Void", image: "void.svg", color: "#000000")
+            Mood(name: "Bien", image: "bien.png", color: "jaune"),
+            Mood(name: "Moyen", image: "moyen.png", color: "vert"),
+            Mood(name: "Mal", image: "mal.svg", color: "violet"),
+            Mood(name: "Très Bien", image: "tres_bien.png", color: "naranja"),
+            Mood(name: "Très Mal", image: "tres_mal.png", color: "rose"),
+            Mood(name: "Void", image: "void.png", color: "gray")
         ].create(on: db)
     }
     
