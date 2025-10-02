@@ -47,3 +47,9 @@ extension User {
         )
     }
 }
+
+
+struct DeleteUserResponseDTO: Content {
+    let success: Bool
+    let message: String
+}

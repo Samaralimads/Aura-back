@@ -17,6 +17,7 @@ struct UserController: RouteCollection {
         let protectedRoutes = users.grouped(JWTMiddleware())
         protectedRoutes.get("profile", use: profile)
         protectedRoutes.patch("update", use: updateUser)
+        protectedRoutes.delete(":userID", use: deleteUser)
     }
 
 
@@ -60,6 +61,26 @@ struct UserController: RouteCollection {
             firstName: user.firstName,
             email: user.email,
             avatar: user.avatar
+        )
+    }
+    
+    
+    @Sendable
+    func deleteUser(req: Request) async throws -> DeleteUserResponseDTO {
+        let user = try req.auth.require(User.self)
+        
+        guard let userID = req.parameters.get("userID"),
+              UUID(uuidString: userID) == user.id else {
+            throw Abort(.forbidden, reason: "You can only delete your own account")
+        }
+        
+        try await user.delete(on: req.db)
+        
+        req.auth.logout(User.self)
+        
+        return DeleteUserResponseDTO(
+            success: true,
+            message: "User account deleted successfully"
         )
     }
 }
