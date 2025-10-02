@@ -21,6 +21,10 @@ enum Entrypoint {
         do {
             try await configure(app)
             try await app.execute()
+            
+            let port = app.http.server.configuration.port
+            app.logger.info("🚀 Serveur démarré sur http://localhost:\(port)")
+            print("📌 Utilise ce port dans Postman ou ton navigateur : \(port)")
         } catch {
             app.logger.report(error: error)
             try? await app.asyncShutdown()

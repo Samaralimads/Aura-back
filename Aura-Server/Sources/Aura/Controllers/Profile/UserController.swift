@@ -15,8 +15,8 @@ struct UserController: RouteCollection {
         
         //MARK: - Public Routes
         users.get(use: index)
-        users.post(use: create)
-        users.post("login", use: login)
+        // users.post(use: create)
+        // users.post("login", use: login)
         users.get(":userID", use: getUserByID)
         
         
@@ -27,7 +27,8 @@ struct UserController: RouteCollection {
 //        protectedRoutes.delete("delete", use: deleteAccount)
     }
     
-    //MARK: - Create a user
+    /*
+     //MARK: - Create a user
     @Sendable
       func create(req: Request) async throws -> UserResponseDTO {
           let input = try req.content.decode(UserCreateDTO.self)
@@ -44,6 +45,7 @@ struct UserController: RouteCollection {
           try await user.save(on: req.db)
           return user.toDTO()
       }
+     */
     
     //MARK: - List all users
     @Sendable
@@ -61,6 +63,8 @@ struct UserController: RouteCollection {
         return user.toDTO()
     }
     
+    
+    /*
     //MARK: - Login
     @Sendable
     func login(req: Request) async throws -> String {
@@ -81,6 +85,7 @@ struct UserController: RouteCollection {
         let token = try req.jwt.sign(payload)
         return token
     }
+     */
     
     //MARK: - Profile
     @Sendable

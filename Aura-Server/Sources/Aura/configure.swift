@@ -72,4 +72,6 @@ public func configure(_ app: Application) async throws {
     app.jwt.signers.use(.hs256(key: jwtKey))
     
     try routes(app)
+    
+    app.http.server.configuration.port = 8081
 }
