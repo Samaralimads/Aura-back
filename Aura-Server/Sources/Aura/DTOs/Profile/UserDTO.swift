@@ -7,6 +7,7 @@
 
 import Vapor
 
+
 struct UserCreateDTO: Content {
     var firstName: String
     var email: String
@@ -14,26 +15,35 @@ struct UserCreateDTO: Content {
     var avatar: String
 }
 
-struct UserUpdateDTO: Content {
+
+struct UserUpdateDTO: Content, Validatable {
     var firstName: String?
     var email: String?
     var password: String?
-    var avatar: String?
+    
+    static func validations(_ validations: inout Validations) {
+        validations.add("firstName", as: String.self, is: !.empty, required: false)
+        validations.add("email", as: String.self, is: .email, required: false)
+        validations.add("password", as: String.self, is: .count(5...), required: false)
+    }
 }
 
+
 struct UserResponseDTO: Content {
-    var id: UUID?
-    var firstName: String
-    var email: String
-    var avatar: String
-    
-    func toModel() -> User {
-        return User(
-            id: id,
-            firstName: firstName,
-            email: email,
-            password: "default",
-            avatar: avatar
+    let id: UUID?
+    let firstName: String
+    let email: String
+    let avatar: String
+}
+
+
+extension User {
+    func toResponseDTO() -> UserResponseDTO {
+        return UserResponseDTO(
+            id: self.id,
+            firstName: self.firstName,
+            email: self.email,
+            avatar: self.avatar
         )
     }
 }
