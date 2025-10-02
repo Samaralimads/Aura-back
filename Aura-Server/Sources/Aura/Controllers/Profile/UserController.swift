@@ -54,13 +54,17 @@ struct UserController: RouteCollection {
             user.password = try Bcrypt.hash(newPassword)
         }
         
+        if let avatar = updateData.avatar {
+            user.avatar = avatar
+        }
+        
         try await user.save(on: req.db)
         
         return UserResponseDTO(
             id: user.id,
             firstName: user.firstName,
             email: user.email,
-            avatar: user.avatar
+            avatar: user.avatar ?? "default.png"
         )
     }
     

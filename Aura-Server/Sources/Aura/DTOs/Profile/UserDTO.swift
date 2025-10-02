@@ -20,11 +20,13 @@ struct UserUpdateDTO: Content, Validatable {
     var firstName: String?
     var email: String?
     var password: String?
+    var avatar: String?
     
     static func validations(_ validations: inout Validations) {
         validations.add("firstName", as: String.self, is: !.empty, required: false)
         validations.add("email", as: String.self, is: .email, required: false)
         validations.add("password", as: String.self, is: .count(5...), required: false)
+        validations.add("avatar", as: String?.self, is: .nil || !.empty, required: false)
     }
 }
 
