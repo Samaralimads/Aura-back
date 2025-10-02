@@ -8,7 +8,7 @@ Aura is a backend API designed to manage :
 - Challenge and reward system
 ---
 ## 🛠 Technologies
-- **Framework**: [Vapor 4](https://vapor.code) (Swift)
+- **Framework**: [Vapor 4](https://vapor.codes) (Swift)
 - **Database**: MariaDB/MySQL (with [Fluent ORM](https://docs.vapor.code/fluent/overview/))
 - **Authentication**: JWT (JSON Web Tokens)
 - **Deployment**: Docker
