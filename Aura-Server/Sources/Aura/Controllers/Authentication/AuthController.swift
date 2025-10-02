@@ -35,7 +35,7 @@ struct AuthController: RouteCollection {
             throw Abort(.unauthorized, reason: "Incorrect password")
         }
         
-        let token = try UserToken.generateJWT(for: user, on: req)
+        let token = try UserPayload.generateJWT(for: user, on: req)
         
         
         let response = UserLoginResponse(
@@ -68,7 +68,7 @@ struct AuthController: RouteCollection {
         
         try await user.save(on: req.db)
         
-        let token = try UserToken.generateJWT(for: user, on: req)
+        let token = try UserPayload.generateJWT(for: user, on: req)
         
         let response = UserLoginResponse(
             token: token,
