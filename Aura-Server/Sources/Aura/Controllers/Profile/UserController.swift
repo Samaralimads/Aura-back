@@ -24,12 +24,26 @@ struct UserController: RouteCollection {
     @Sendable
     func profile(req: Request) async throws -> UserResponseDTO {
         let user = try req.auth.require(User.self)
-        return user.toDTO()
+        
+        let userBadges = try await UserBadge.query(on: req.db)
+            .filter(\.$user.$id == user.id!)
+            .with(\.$badge)
+            .all()
+        
+        let badgeDTOs = userBadges.map { userBadge in
+            BadgeResponseDTO(
+                id: userBadge.badge.id,
+                name: userBadge.badge.name,
+                image: userBadge.badge.image,
+                description: userBadge.badge.description
+            )
+        }
+        return user.toResponseDTO(badges: badgeDTOs)
     }
-    
+
     
     @Sendable
-    func updateUser(req: Request) async throws -> UserResponseDTO {
+    func updateUser(req: Request) async throws -> UserUpdateResponseDTO {
         let user = try req.auth.require(User.self)
         let updateData = try req.content.decode(UserUpdateDTO.self)
         
@@ -60,7 +74,7 @@ struct UserController: RouteCollection {
         
         try await user.save(on: req.db)
         
-        return UserResponseDTO(
+        return UserUpdateResponseDTO(
             id: user.id,
             firstName: user.firstName,
             email: user.email,

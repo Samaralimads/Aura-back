@@ -31,7 +31,7 @@ struct UserUpdateDTO: Content, Validatable {
 }
 
 
-struct UserResponseDTO: Content {
+struct UserUpdateResponseDTO: Content {
     let id: UUID?
     let firstName: String
     let email: String
@@ -39,13 +39,23 @@ struct UserResponseDTO: Content {
 }
 
 
+struct UserResponseDTO: Content {
+    let id: UUID?
+    let firstName: String
+    let email: String
+    let avatar: String
+    let badges: [BadgeResponseDTO]
+}
+
+
 extension User {
-    func toResponseDTO() -> UserResponseDTO {
+    func toResponseDTO(badges: [BadgeResponseDTO]) -> UserResponseDTO {
         return UserResponseDTO(
             id: self.id,
             firstName: self.firstName,
             email: self.email,
-            avatar: self.avatar
+            avatar: self.avatar,
+            badges: badges
         )
     }
 }

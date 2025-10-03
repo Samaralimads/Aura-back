@@ -8,6 +8,15 @@ import JWT
 
 // configures your application
 public func configure(_ app: Application) async throws {
+    
+    let corsConfig = CORSMiddleware.Configuration(
+        allowedOrigin: .all,
+        allowedMethods: [.GET, .POST, .PUT, .DELETE, .PATCH, .OPTIONS],
+        allowedHeaders: [.accept, .authorization, .contentType, .origin, .xRequestedWith, .userAgent],
+        allowCredentials: true
+    )
+    
+    app.middleware.use(CORSMiddleware(configuration: corsConfig))
 
     
     // uncomment to serve files from /Public folder
@@ -62,6 +71,7 @@ public func configure(_ app: Application) async throws {
     app.migrations.add(EmotionSeeds())
     app.migrations.add(BreathingSeeds())
     app.migrations.add(JournalSeeds())
+    app.migrations.add(BadgeSeeds())
 
     
     try await app.autoMigrate()
