@@ -73,6 +73,8 @@ public func configure(_ app: Application) async throws {
     app.migrations.add(JournalSeeds())
     app.migrations.add(BadgeSeeds())
 
+    //MARK: - MIGRATIONS SEEDS
+    app.migrations.add(BreathingSeedUpdate())
     
     try await app.autoMigrate()
     app.views.use(.leaf)
