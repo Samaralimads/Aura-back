@@ -9,6 +9,7 @@ import JWT
 // configures your application
 public func configure(_ app: Application) async throws {
     
+    // MARK: - CORS
     let corsConfig = CORSMiddleware.Configuration(
         allowedOrigin: .all,
         allowedMethods: [.GET, .POST, .PUT, .DELETE, .PATCH, .OPTIONS],
@@ -84,6 +85,4 @@ public func configure(_ app: Application) async throws {
     app.jwt.signers.use(.hs256(key: jwtKey))
     
     try routes(app)
-    
-    app.http.server.configuration.port = 8081
 }
