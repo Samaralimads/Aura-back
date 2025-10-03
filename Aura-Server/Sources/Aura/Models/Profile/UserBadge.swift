@@ -19,8 +19,8 @@ final class UserBadge: Model, @unchecked Sendable {
     
     @Parent(key: "badge_id")
     var badge: Badge
-
-    init() {}
+    
+    init() { }
     
     init(id: UUID? = nil, userID: User.IDValue, badgeID: Badge.IDValue) {
         self.id = id

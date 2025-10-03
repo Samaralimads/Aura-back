@@ -64,7 +64,7 @@ struct UserController: RouteCollection {
             id: user.id,
             firstName: user.firstName,
             email: user.email,
-            avatar: user.avatar ?? "default.png"
+            avatar: user.avatar
         )
     }
     
