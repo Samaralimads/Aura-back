@@ -59,11 +59,21 @@ final class User: Model, @unchecked Sendable, Authenticatable {
     }
     
     func toDTO() -> UserResponseDTO {
+        let badgeDTOs = self.badges.map { badge in
+            BadgeResponseDTO(
+                id: badge.id,
+                name: badge.name,
+                image: badge.image,
+                description: badge.description
+            )
+        }
+        
         return UserResponseDTO(
             id: self.id,
             firstName: self.firstName,
             email: self.email,
-            avatar: self.avatar
+            avatar: self.avatar,
+            badges: badgeDTOs
         )
     }
 }
