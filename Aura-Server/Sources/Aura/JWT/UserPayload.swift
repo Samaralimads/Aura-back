@@ -31,7 +31,7 @@ struct UserPayload: JWTPayload, Authenticatable {
         
         let payload = UserPayload(
             userID: userID,
-            expiration: ExpirationClaim(value: Date().addingTimeInterval(43200)),
+            expiration: ExpirationClaim(value: Date().addingTimeInterval(604800)),
             subject: SubjectClaim(value: userID.uuidString)
         )
         
