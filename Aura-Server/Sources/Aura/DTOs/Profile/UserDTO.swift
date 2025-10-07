@@ -40,28 +40,29 @@ struct UserUpdateResponseDTO: Content {
 
 
 struct UserResponseDTO: Content {
-    let id: UUID?
-    let firstName: String
-    let email: String
-    let avatar: String
-    let badges: [BadgeResponseDTO]
-}
-
-
-extension User {
-    func toResponseDTO(badges: [BadgeResponseDTO]) -> UserResponseDTO {
-        return UserResponseDTO(
-            id: self.id,
-            firstName: self.firstName,
-            email: self.email,
-            avatar: self.avatar,
-            badges: badges
+    var id: UUID?
+    var firstName: String
+    var email: String
+    var avatar: String
+    
+    func toModel() -> User {
+        return User(
+            id: id,
+            firstName: firstName,
+            email: email,
+            password: "default",
+            avatar: avatar
         )
     }
 }
-
 
 struct DeleteUserResponseDTO: Content {
     let success: Bool
     let message: String
 }
+
+
+
+
+
+

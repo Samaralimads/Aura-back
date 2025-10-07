@@ -13,6 +13,10 @@ struct UserController: RouteCollection {
     func boot(routes: any RoutesBuilder) throws {
         let users = routes.grouped("users")
         
+        //MARK: - Public Routes
+        users.get(use: index)
+        users.get(":userID", use: getUserByID)
+        
         //MARK: - Authenticated Routes
         let protectedRoutes = users.grouped(JWTMiddleware())
         protectedRoutes.get("profile", use: profile)
@@ -20,9 +24,25 @@ struct UserController: RouteCollection {
         protectedRoutes.delete(":userID", use: deleteUser)
     }
 
-
+    //MARK: - List all users
+        @Sendable
+        func index(req: Request) async throws -> [UserResponseDTO] {
+            let users = try await User.query(on: req.db).all()
+            return users.map { $0.toDTO() }
+        }
+        
+        // MARK: - Get user by ID
+        @Sendable
+        func getUserByID(req: Request) async throws -> UserResponseDTO {
+            guard let user = try await User.find(req.parameters.get("userID"), on: req.db) else {
+                throw Abort(.notFound, reason: "User not found")
+            }
+            return user.toDTO()
+        }
+        
+    //MARK: - Profile
     @Sendable
-    func profile(req: Request) async throws -> UserResponseDTO {
+    func profile(req: Request) async throws -> UserBadgeResponseDTO {
         let user = try req.auth.require(User.self)
         
         let userBadges = try await UserBadge.query(on: req.db)
@@ -38,7 +58,7 @@ struct UserController: RouteCollection {
                 description: userBadge.badge.description
             )
         }
-        return user.toResponseDTO(badges: badgeDTOs)
+        return user.toBadgeResponseDTO(badges: badgeDTOs)
     }
 
     
