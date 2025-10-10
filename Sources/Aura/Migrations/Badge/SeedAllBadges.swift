@@ -1,19 +1,19 @@
 //
-//  BadgeSeeds.swift
+//  SeedAllBadges.swift
 //  Aura
 //
-//  Created by Mehdi Legoullon on 03/10/2025.
+//  Created by Mehdi Legoullon on 10/10/2025.
 //
 
 import Fluent
 import Vapor
 
 
-struct BadgeSeeds: AsyncMigration {
+struct SeedAllBadges: AsyncMigration {
     func prepare(on db: any Database) async throws {
-        print("🌱 Démarrage de BadgeSeeds...")
+        print("🌱 Démarrage de SeedAllBadges : création des 7 badges...")
         
-        // Liste complète des 7 badges
+        // Liste complète des 7 badges avec leurs IDs fixes et images
         let badges = [
             Badge(
                 id: UUID(uuidString: "11111111-1111-1111-1111-111111111111")!,
@@ -29,33 +29,33 @@ struct BadgeSeeds: AsyncMigration {
             ),
             Badge(
                 id: UUID(uuidString: "33333333-3333-3333-3333-333333333333")!,
-                name: "Sleep Challenge",
+                name: "Sleep Master",
                 image: "/Badges/mental.svg",
-                description: "Completed a sleep challenge."
+                description: "Improved your sleep quality."
             ),
             Badge(
                 id: UUID(uuidString: "44444444-4444-4444-4444-444444444444")!,
-                name: "Breathing Master",
+                name: "Breathing Expert",
                 image: "/Badges/leaf.svg",
                 description: "Mastered breathing exercises."
             ),
             Badge(
                 id: UUID(uuidString: "55555555-5555-5555-5555-555555555555")!,
-                name: "Positive Mood",
+                name: "Positive Vibes",
                 image: "/Badges/flower.svg",
                 description: "Maintained a positive mood for a week."
             ),
             Badge(
                 id: UUID(uuidString: "66666666-6666-6666-6666-666666666666")!,
-                name: "Morning Routine",
-                image: "/Badges/sunrise.svg",
-                description: "Completed a morning routine challenge."
+                name: "Focus Unlocked",
+                image: "/Badges/lock.svg",
+                description: "Unlocked deep focus during sessions."
             ),
             Badge(
                 id: UUID(uuidString: "77777777-7777-7777-7777-777777777777")!,
-                name: "Journaling Hero",
-                image: "/Badges/journal.svg",
-                description: "Wrote in your journal for 7 days."
+                name: "Wind Down",
+                image: "/Badges/wind.svg",
+                description: "Completed a wind-down routine."
             )
         ]
         

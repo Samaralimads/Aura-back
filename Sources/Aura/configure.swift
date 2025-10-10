@@ -77,6 +77,8 @@ public func configure(_ app: Application) async throws {
     //MARK: - MIGRATIONS SEEDS
     app.migrations.add(BreathingSeedUpdate())
     app.migrations.add(UpdateBadgeImageURLs())
+    app.migrations.add(SeedAllBadges())
+
     
     try await app.autoMigrate()
     app.views.use(.leaf)
