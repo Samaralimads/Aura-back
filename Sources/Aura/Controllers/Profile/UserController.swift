@@ -9,6 +9,7 @@ import Fluent
 import Vapor
 import JWT
 
+
 struct UserController: RouteCollection {
     func boot(routes: any RoutesBuilder) throws {
         let users = routes.grouped("users")
@@ -42,15 +43,21 @@ struct UserController: RouteCollection {
         
     //MARK: - Profile
     @Sendable
-    func profile(req: Request) async throws -> UserBadgeResponseDTO {
+    func profile(req: Request) async throws -> UserProfileResponseDTO {
         let user = try req.auth.require(User.self)
         
+        // Récupérer tous les badges
+        let allBadges = try await Badge.query(on: req.db).all()
+        
+        // Récupérer les badges débloqués par l'utilisateur
         let userBadges = try await UserBadge.query(on: req.db)
             .filter(\.$user.$id == user.id!)
             .with(\.$badge)
             .all()
         
-        let badgeDTOs = userBadges.map { userBadge in
+        let userBadgeIDs = Set(userBadges.map { $0.badge.id })
+        
+        let unlockedBadges = userBadges.map { userBadge in
             BadgeResponseDTO(
                 id: userBadge.badge.id,
                 name: userBadge.badge.name,
@@ -58,9 +65,25 @@ struct UserController: RouteCollection {
                 description: userBadge.badge.description
             )
         }
-        return user.toBadgeResponseDTO(badges: badgeDTOs)
+        
+        let lockedBadges = allBadges.filter { !userBadgeIDs.contains($0.id) }.map { badge in
+            BadgeResponseDTO(
+                id: badge.id,
+                name: badge.name,
+                image: badge.image,
+                description: badge.description
+            )
+        }
+        
+        return UserProfileResponseDTO(
+            id: user.id,
+            email: user.email,
+            firstName: user.firstName,
+            avatar: user.avatar,
+            unlockedBadges: unlockedBadges,
+            lockedBadges: lockedBadges
+        )
     }
-
     
     @Sendable
     func updateUser(req: Request) async throws -> UserUpdateResponseDTO {
