@@ -15,6 +15,10 @@ struct AuthController: RouteCollection {
         let auth = routes.grouped("auth")
         auth.post("login", use: login)
         auth.post("register", use: register)
+        
+        //MARK: - Authenticated Routes
+        let protectedRoutes = auth.grouped(JWTMiddleware())
+        protectedRoutes.post("logout", use: logout)
     }
     
     @Sendable
@@ -77,4 +81,11 @@ struct AuthController: RouteCollection {
         
         return try await response.encodeResponse(status: .created, for: req)
     }
+}
+
+
+// MARK: - Logout
+@Sendable
+func logout(req: Request) async throws -> LogoutResponseDTO {
+    return LogoutResponseDTO(success: true, message: "Successfully logged out")
 }

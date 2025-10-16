@@ -42,3 +42,8 @@ struct UserProfileResponse: Content {
     let email: String
     let avatar: String?
 }
+
+struct LogoutResponseDTO: Content {
+    let success: Bool
+    let message: String
+}
