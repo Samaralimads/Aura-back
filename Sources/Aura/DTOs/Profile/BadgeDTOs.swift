@@ -13,3 +13,8 @@ struct BadgeResponseDTO: Content {
     let image: String?
     let description: String?
 }
+
+
+struct UnlockBadgeRequest: Content {
+    let badgeID: UUID
+}
