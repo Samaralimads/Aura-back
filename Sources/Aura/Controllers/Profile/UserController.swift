@@ -41,13 +41,14 @@ struct UserController: RouteCollection {
             return user.toDTO()
         }
         
-    //MARK: - Profile
+    // MARK: - Profile
     @Sendable
     func profile(req: Request) async throws -> UserProfileResponseDTO {
         let user = try req.auth.require(User.self)
         
-        // Récupérer tous les badges
+        // Récupérer tous les badges (sauf le placeholder)
         let allBadges = try await Badge.query(on: req.db).all()
+        let placeholderBadgeID = UUID(uuidString: "00000000-0000-0000-0000-000000000000")!
         
         // Récupérer les badges débloqués par l'utilisateur
         let userBadges = try await UserBadge.query(on: req.db)
@@ -57,6 +58,7 @@ struct UserController: RouteCollection {
         
         let userBadgeIDs = Set(userBadges.map { $0.badge.id })
         
+        // Badges débloqués (inchangé)
         let unlockedBadges = userBadges.map { userBadge in
             BadgeResponseDTO(
                 id: userBadge.badge.id,
@@ -66,14 +68,19 @@ struct UserController: RouteCollection {
             )
         }
         
-        let lockedBadges = allBadges.filter { !userBadgeIDs.contains($0.id) }.map { badge in
-            BadgeResponseDTO(
-                id: badge.id,
-                name: badge.name,
-                image: badge.image,
-                description: badge.description
-            )
-        }
+        // Badges verrouillés : exclure le placeholder ET ceux déjà débloqués
+        let lockedBadges = allBadges
+            .filter { badge in
+                !userBadgeIDs.contains(badge.id) && badge.id != placeholderBadgeID
+            }
+            .map { badge in
+                BadgeResponseDTO(
+                    id: badge.id,
+                    name: badge.name,
+                    image: badge.image,
+                    description: badge.description
+                )
+            }
         
         return UserProfileResponseDTO(
             id: user.id,
@@ -81,10 +88,11 @@ struct UserController: RouteCollection {
             firstName: user.firstName,
             avatar: user.avatar,
             unlockedBadges: unlockedBadges,
-            lockedBadges: lockedBadges
+            lockedBadges: lockedBadges,
+            lockBadgeImage: "/Badges/lock.png" // Optionnel : ajoute cette propriété à ton DTO
         )
     }
-    
+
     @Sendable
     func updateUser(req: Request) async throws -> UserUpdateResponseDTO {
         let user = try req.auth.require(User.self)
