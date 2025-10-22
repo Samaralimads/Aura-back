@@ -17,7 +17,7 @@ final class Task: Model, Content, @unchecked Sendable {
     @Field(key: "title")
     var title: String
 
-    @Parent(key: "challenge_id")
+    @Parent(key: "challenge_id") //Clé étrangere challenge
     var challenge: Challenge
 
     @Siblings(through: UserTask.self, from: \.$task, to: \.$user)
@@ -31,4 +31,13 @@ final class Task: Model, Content, @unchecked Sendable {
     }
 }
 
+extension Task {
+    func ResponseForTask() -> TaskResponse {
+        TaskResponse(
+            id: self.id!,
+            title: self.title,
+            challengeID: self.$challenge.id
+        )
+    }
+}
 

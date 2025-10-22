@@ -47,3 +47,17 @@ final class Challenge: Model, Content, @unchecked Sendable {
         self.endDate = endDate
     }
 }
+
+extension Challenge {
+    func ToResponse() -> ChallengeResponse {
+        ChallengeResponse(
+            id: self.id!,
+            theme: self.theme,
+            image: self.image,
+            description: self.description,
+            startDate: self.startDate,
+            endDate: self.endDate,
+            tasks: self.tasks.map{$0.ResponseForTask()}
+        )
+    }
+}

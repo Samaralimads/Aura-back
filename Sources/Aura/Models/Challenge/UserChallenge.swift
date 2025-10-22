@@ -29,3 +29,12 @@ final class UserChallenge: Model, @unchecked Sendable {
     }
 }
 
+extension UserChallenge {
+    func userChallengeResponse() -> UserChallengeResponse {
+        UserChallengeResponse(
+            id: self.id!,
+            userID: self.user.id!,
+            challengeID: self.challenge.id!,
+        )
+    }
+}

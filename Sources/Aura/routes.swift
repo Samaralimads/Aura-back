@@ -14,4 +14,5 @@ func routes(_ app: Application) throws {
     try app.register(collection: BreathingController())
     try app.register(collection: UserBreathingController())
     try app.register(collection: BadgeController())
+    try app.register(collection: ChallengeController())
 }
