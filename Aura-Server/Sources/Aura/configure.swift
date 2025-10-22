@@ -20,8 +20,8 @@ public func configure(_ app: Application) async throws {
     app.databases.use(DatabaseConfigurationFactory.mysql(
         hostname: Environment.get("DB_HOST") ?? "127.0.0.1",
         port: Environment.get("DB_PORT").flatMap(Int.init) ?? 3306,
-        username: Environment.get("DB_USERNAME") ?? "aura",
-        password: Environment.get("DB_PASSWORD") ?? "aurapass",
+        username: Environment.get("DB_USERNAME") ?? "root",
+        password: Environment.get("DB_PASSWORD") ?? "",
         database: Environment.get("DB_NAME") ?? "auradb"
     ), as: .mysql)
     
@@ -62,10 +62,12 @@ public func configure(_ app: Application) async throws {
     app.migrations.add(EmotionSeeds())
     app.migrations.add(BreathingSeeds())
     app.migrations.add(JournalSeeds())
+    app.migrations.add(MeditationSeeds())
 
     //MARK: - MIGRATIONS SEEDS
     app.migrations.add(BreathingSeedUpdate())
-    
+
+
     try await app.autoMigrate()
     app.views.use(.leaf)
     
