@@ -10,6 +10,8 @@ import Fluent
 import JWT
 
 struct AuthController: RouteCollection {
+    static let defaultAvatar = "Avatars/default.png"
+
     func boot(routes: any RoutesBuilder) throws {
         // MARK: - Public Auth Routes
         let auth = routes.grouped("auth")
@@ -67,7 +69,7 @@ struct AuthController: RouteCollection {
             firstName: registerData.firstName,
             email: registerData.email,
             password: try Bcrypt.hash(registerData.password),
-            avatar: "default.png"
+            avatar: Self.defaultAvatar
         )
         
         try await user.save(on: req.db)
@@ -82,7 +84,6 @@ struct AuthController: RouteCollection {
         return try await response.encodeResponse(status: .created, for: req)
     }
 }
-
 
 // MARK: - Logout
 @Sendable
