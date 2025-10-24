@@ -34,7 +34,7 @@ extension UserChallenge {
         UserChallengeResponse(
             id: self.id!,
             userID: self.user.id!,
-            challengeID: self.challenge.id!,
+            challengeID: self.challenge.id!
         )
     }
 }

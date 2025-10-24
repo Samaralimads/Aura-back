@@ -9,12 +9,12 @@ import Fluent
 import Vapor
 
 struct UserChallengeDTO: Content {
-    let userId: UUID
-    let challengeId: UUID
+    let userID: UUID
+    let challengeID: UUID
 }
 
 struct UserChallengeResponse: Content {
     let id: UUID
-    let userId: UUID
-    let challengeId: UUID
+    let userID: UUID
+    let challengeID: UUID
 }

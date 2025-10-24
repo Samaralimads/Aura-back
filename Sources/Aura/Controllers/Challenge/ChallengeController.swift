@@ -38,6 +38,7 @@ struct ChallengeController: RouteCollection {
     @Sendable
     func getAllChallenge(req: Request) async throws -> [ChallengeResponse] {
         let challenges = try await Challenge.query(on: req.db)
+            .with(\.$tasks)
             .all()
         return challenges.map{$0.ToResponse()}
     }
@@ -45,7 +46,15 @@ struct ChallengeController: RouteCollection {
     //GET BY ID
     @Sendable
     func getChallengeById(req: Request) async throws -> ChallengeResponse {
-        guard let challenge = try await Challenge.find(req.parameters.get("id"), on: req.db) else {
+        guard let challengeID = req.parameters.get("id", as: UUID.self)
+        else {
+            throw Abort(.notFound, reason: "ERROR : Challenge ID not found.")
+        }
+        guard let challenge = try await Challenge.query(on: req.db)
+            .filter(\.$id == challengeID)
+            .with(\.$tasks)
+            .first()
+        else {
             throw Abort(.notFound, reason: "ERROR : Challenge not found.")
         }
         return challenge.ToResponse()
@@ -83,7 +92,7 @@ struct ChallengeController: RouteCollection {
     @Sendable
     func deleteChallenge(req: Request) async throws -> HTTPStatus {
         guard let challenge = try await Challenge.find(req.parameters.require("id"), on: req.db) else {
-            throw Abort(.notFound, reason: "ERROR : Challenge not found.")
+            throw Abort(.notFound, reason: "ERROR : Challenge ID not found.")
         }
         try await challenge.delete(on: req.db)
         return .noContent

@@ -14,7 +14,7 @@ struct CreateChallengeDTO : Content {
     var description : String
     var startDate : Date
     var endDate : Date
-    var tasks : [String]
+
 }
 
 struct ChallengeResponse : Content {
@@ -24,8 +24,6 @@ struct ChallengeResponse : Content {
     var description : String
     var startDate : Date
     var endDate : Date
-    var tasks : [TaskResponse]
-    
 }
 
 struct UpdateChallenge : Content {
@@ -34,5 +32,4 @@ struct UpdateChallenge : Content {
     var description : String?
     var startDate : Date?
     var endDate : Date?
-    var tasks : [String]?
 }

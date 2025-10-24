@@ -28,3 +28,13 @@ final class UserTask: Model, @unchecked Sendable {
         self.$task.id = taskID
     }
 }
+
+extension UserTask {
+    func userTaskResponse() -> UserTaskResponse {
+        UserTaskResponse(
+            id: self.id!,
+            userID: self.user.id!,
+            taskID: self.task.id!
+        )
+    }
+}

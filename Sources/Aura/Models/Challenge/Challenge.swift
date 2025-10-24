@@ -35,7 +35,6 @@ final class Challenge: Model, Content, @unchecked Sendable {
     @Siblings(through: UserChallenge.self, from: \.$challenge, to: \.$user)
     var users: [User]
     
-
     init() {}
     
     init(id: UUID? = nil, theme: String, image: String, description: String, startDate: Date, endDate: Date) {
@@ -57,7 +56,6 @@ extension Challenge {
             description: self.description,
             startDate: self.startDate,
             endDate: self.endDate,
-            tasks: self.tasks.map{$0.ResponseForTask()}
         )
     }
 }

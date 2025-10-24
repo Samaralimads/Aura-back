@@ -73,7 +73,8 @@ public func configure(_ app: Application) async throws {
     app.migrations.add(BreathingSeeds())
     app.migrations.add(JournalSeeds())
     app.migrations.add(BadgeSeeds())
-
+    app.migrations.add(ChallengeSeeds())
+    
     //MARK: - MIGRATIONS SEEDS
     app.migrations.add(BreathingSeedUpdate())
     app.migrations.add(UpdateBadgeImageURLs())
