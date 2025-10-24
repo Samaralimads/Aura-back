@@ -10,7 +10,7 @@ import Fluent
 import JWT
 
 struct AuthController: RouteCollection {
-    static let defaultAvatar = "Avatars/default.png"
+    static let defaultAvatar = "avatars/default.png"
 
     func boot(routes: any RoutesBuilder) throws {
         // MARK: - Public Auth Routes
