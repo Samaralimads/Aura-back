@@ -15,6 +15,7 @@ struct UserBreathingController: RouteCollection {
         userBreathings.post(use: createUserBreathing)
         userBreathings.get(use: getAllUserBreathing)
         userBreathings.get(":id", use: getUserBreathingByID)
+        userBreathings.delete(":id", use: deleteUserBreathing)
         
 // GET /users/:userID/breathings?from=2025-09-01&to=2025-09-30 à faire dans users routes pour controler si un user à fait respiration via periode (entre date .. et date ..)
         
@@ -73,6 +74,16 @@ struct UserBreathingController: RouteCollection {
             throw Abort(.badRequest, reason: "ERROR: UserBreathing not found.")
         }
         return userBreathing.ToResponse()
+    }
+    
+    //DELETE
+    @Sendable
+    func deleteUserBreathing(req: Request) async throws -> HTTPStatus {
+        guard let userBreathing = try await UserBreathing.find(req.parameters.require("id"), on: req.db) else {
+            throw Abort (.notFound, reason: "ERROR: user breathing not found.")
+        }
+        try await userBreathing.delete(on: req.db)
+        return .noContent
     }
 
 }

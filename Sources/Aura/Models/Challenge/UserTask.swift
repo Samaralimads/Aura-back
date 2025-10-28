@@ -19,12 +19,22 @@ final class UserTask: Model, @unchecked Sendable {
     
     @Parent(key: "task_id")
     var task: Task
-
+    
     init() {}
     
     init(id: UUID? = nil, userID: User.IDValue, taskID: Task.IDValue) {
         self.id = id
         self.$user.id = userID
         self.$task.id = taskID
+    }
+}
+
+extension UserTask {
+    func userTaskResponse() -> UserTaskResponse {
+        UserTaskResponse(
+            id: self.id!,
+            userID: self.user.id!,
+            taskID: self.task.id!,
+        )
     }
 }
