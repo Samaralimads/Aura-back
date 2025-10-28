@@ -12,6 +12,7 @@ struct TaskController: RouteCollection {
     func boot(routes: any RoutesBuilder) throws {
         let tasks = routes.grouped("tasks")
         
+        tasks.get("challenge", ":id", use: getTasksByChallenge)
         tasks.post(use: createTask)
         tasks.get(use: getAllTasks)
         tasks.get(":id", use: getTaskByID)
@@ -78,5 +79,18 @@ struct TaskController: RouteCollection {
         }
         try await task.delete(on: req.db)
         return .noContent
+    }
+    
+    //GET TASK BY ID CHALLENGE
+    @Sendable
+    func getTasksByChallenge(req:Request) async throws -> [TaskResponse] {
+        guard let challengeID = req.parameters.get("id", as: UUID.self) else {
+            throw Abort(.notFound, reason: "ERROR: Challenge ID not valid.")
+        }
+        let tasks = try await Task.query(on: req.db)
+            .filter(\.$challenge.$id == challengeID)
+            .all()
+        
+        return tasks.map{$0.ResponseForTask()}
     }
 }

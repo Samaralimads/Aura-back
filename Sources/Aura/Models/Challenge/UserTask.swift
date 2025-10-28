@@ -19,7 +19,7 @@ final class UserTask: Model, @unchecked Sendable {
     
     @Parent(key: "task_id")
     var task: Task
-
+    
     init() {}
     
     init(id: UUID? = nil, userID: User.IDValue, taskID: Task.IDValue) {
@@ -34,7 +34,7 @@ extension UserTask {
         UserTaskResponse(
             id: self.id!,
             userID: self.user.id!,
-            taskID: self.task.id!
+            taskID: self.task.id!,
         )
     }
 }

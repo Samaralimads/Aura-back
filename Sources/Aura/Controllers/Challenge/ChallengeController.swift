@@ -17,6 +17,8 @@ struct ChallengeController: RouteCollection {
         challenges.get(":id", use: getChallengeById)
         challenges.patch(":id", use: updateChallenge)
         challenges.delete(":id", use: deleteChallenge)
+        challenges.get("current", use: getCurrentChallenge)
+                
     }
     
     //CREATE CHALLENGE
@@ -38,7 +40,6 @@ struct ChallengeController: RouteCollection {
     @Sendable
     func getAllChallenge(req: Request) async throws -> [ChallengeResponse] {
         let challenges = try await Challenge.query(on: req.db)
-            .with(\.$tasks)
             .all()
         return challenges.map{$0.ToResponse()}
     }
@@ -52,7 +53,6 @@ struct ChallengeController: RouteCollection {
         }
         guard let challenge = try await Challenge.query(on: req.db)
             .filter(\.$id == challengeID)
-            .with(\.$tasks)
             .first()
         else {
             throw Abort(.notFound, reason: "ERROR : Challenge not found.")
@@ -97,5 +97,18 @@ struct ChallengeController: RouteCollection {
         try await challenge.delete(on: req.db)
         return .noContent
     }
+    
+    //GET CURRENT CHALLENGE (month)
+    @Sendable
+    func getCurrentChallenge(req: Request) async throws -> ChallengeResponse {
+        let now = Date()
+        guard let challenge = try await Challenge.query(on: req.db)
+            .filter(\.$startDate <= now)
+            .filter(\.$endDate >= now)
+            .first()
+        else {
+           throw Abort(.notFound, reason: "ERROR : No challenge in progress.")
+       }
+        return challenge.ToResponse()
+    }
 }
-

@@ -33,3 +33,9 @@ struct UpdateChallenge : Content {
     var startDate : Date?
     var endDate : Date?
 }
+
+struct ChallengeStatusResponse : Content {
+    var challenge : Challenge
+    var tasks: [TaskResponse]
+    var userTasks: [UserTaskResponse]
+}

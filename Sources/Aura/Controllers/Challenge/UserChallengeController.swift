@@ -45,7 +45,7 @@ struct UserChallengeController: RouteCollection {
     //GET ALL
     @Sendable
     func getAllUserChallenges(req: Request) async throws -> [UserChallengeResponse] {
-        let userChallenges =  try await UserChallenge.query(on: req.db)
+        let userChallenges = try await UserChallenge.query(on: req.db)
             .with(\.$user)
             .with(\.$challenge)
             .all()
@@ -78,4 +78,6 @@ struct UserChallengeController: RouteCollection {
         try await userChallenge.delete(on: req.db)
         return .noContent
     }
+    
+    
 }

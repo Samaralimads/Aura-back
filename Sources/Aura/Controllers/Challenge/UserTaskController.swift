@@ -29,7 +29,7 @@ struct UserTaskController: RouteCollection {
         }
         let userTask = UserTask(
             userID: dto.userID,
-            taskID: dto.taskID
+            taskID: dto.taskID,
         )
         try await userTask.save(on: req.db)
         
