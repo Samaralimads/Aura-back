@@ -14,9 +14,17 @@ func routes(_ app: Application) throws {
     try app.register(collection: BreathingController())
     try app.register(collection: UserBreathingController())
     try app.register(collection: BadgeController())
-    
+    try app.register(collection: AvatarController())
     try app.register(collection: ChallengeController())
     try app.register(collection: TaskController())
     try app.register(collection: UserTaskController())
     try app.register(collection: UserChallengeController())
+    
+    
+    // SwaggerUI: API Docs
+    app.get("docs") { req -> Response in
+        let indexPath = app.directory.publicDirectory + "swagger-ui/index.html"
+        let fileContents = try String(contentsOfFile: indexPath, encoding: .utf8)
+        return Response(body: .init(string: fileContents))
+    }
 }
