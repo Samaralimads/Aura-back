@@ -1,0 +1,1087 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Aura API",
+    "description": "API pour l'application Aura - Bien-être mental",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:8080",
+      "description": "Serveur de développement"
+    }
+  ],
+  "paths": {
+    "/auth/login": {
+      "post": {
+        "tags": ["Auth"],
+        "summary": "Connexion d'un utilisateur",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": { "type": "string", "format": "email" },
+                  "password": { "type": "string" }
+                },
+                "required": ["email", "password"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "Connexion réussie, retourne un token JWT" },
+          "401": { "description": "Identifiants invalides" }
+        }
+      }
+    },
+    "/auth/register": {
+      "post": {
+        "tags": ["Auth"],
+        "summary": "Inscription d'un nouvel utilisateur",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": { "type": "string" },
+                  "email": { "type": "string", "format": "email" },
+                  "password": { "type": "string" }
+                },
+                "required": ["name", "email", "password"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": { "description": "Utilisateur créé avec succès" },
+          "400": { "description": "Requête invalide" }
+        }
+      }
+    },
+    "/auth/logout": {
+      "post": {
+        "tags": ["Auth"],
+        "summary": "Déconnexion d'un utilisateur",
+        "security": [{ "bearerAuth": [] }],
+        "responses": {
+          "200": { "description": "Déconnexion réussie" }
+        }
+      }
+    },
+    "/users": {
+      "get": {
+        "tags": ["Users"],
+        "summary": "Récupère la liste de tous les utilisateurs",
+        "responses": {
+          "200": { "description": "Liste des utilisateurs" }
+        }
+      }
+    },
+    "/users/{userID}": {
+      "get": {
+        "tags": ["Users"],
+        "summary": "Récupère un utilisateur par ID",
+        "parameters": [
+          { "name": "userID", "in": "path", "required": true, "schema": { "type": "integer" } }
+        ],
+        "responses": {
+          "200": { "description": "Utilisateur trouvé" },
+          "404": { "description": "Utilisateur non trouvé" }
+        }
+      },
+      "delete": {
+        "tags": ["Users"],
+        "summary": "Supprime un utilisateur",
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [
+          { "name": "userID", "in": "path", "required": true, "schema": { "type": "integer" } }
+        ],
+        "responses": {
+          "200": { "description": "Utilisateur supprimé" },
+          "404": { "description": "Utilisateur non trouvé" }
+        }
+      }
+    },
+    "/users/profile": {
+      "get": {
+        "tags": ["Users"],
+        "summary": "Récupère le profil de l'utilisateur connecté",
+        "security": [{ "bearerAuth": [] }],
+        "responses": {
+          "200": { "description": "Profil de l'utilisateur" }
+        }
+      }
+    },
+    "/users/update": {
+      "patch": {
+        "tags": ["Users"],
+        "summary": "Met à jour le profil de l'utilisateur connecté",
+        "security": [{ "bearerAuth": [] }],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": { "type": "string" },
+                  "email": { "type": "string", "format": "email" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "Profil mis à jour" },
+          "400": { "description": "Requête invalide" }
+        }
+      }
+    },
+    "/days": {
+      "post": {
+        "tags": ["Days"],
+        "summary": "Crée un nouveau jour",
+        "security": [{ "bearerAuth": [] }],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "date": { "type": "string", "format": "date" },
+                  "note": { "type": "string" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": { "description": "Jour créé" }
+        }
+      },
+      "get": {
+        "tags": ["Days"],
+        "summary": "Récupère tous les jours",
+        "security": [{ "bearerAuth": [] }],
+        "responses": {
+          "200": { "description": "Liste des jours" }
+        }
+      }
+    },
+    "/days/{dayID}": {
+      "get": {
+        "tags": ["Days"],
+        "summary": "Récupère un jour par ID",
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [
+          { "name": "dayID", "in": "path", "required": true, "schema": { "type": "integer" } }
+        ],
+        "responses": {
+          "200": { "description": "Jour trouvé" },
+          "404": { "description": "Jour non trouvé" }
+        }
+      },
+      "patch": {
+        "tags": ["Days"],
+        "summary": "Met à jour un jour",
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [
+          { "name": "dayID", "in": "path", "required": true, "schema": { "type": "integer" } }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "note": { "type": "string" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "Jour mis à jour" }
+        }
+      },
+      "delete": {
+        "tags": ["Days"],
+        "summary": "Supprime un jour",
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [
+          { "name": "dayID", "in": "path", "required": true, "schema": { "type": "integer" } }
+        ],
+        "responses": {
+          "200": { "description": "Jour supprimé" }
+        }
+      }
+    },
+    "/reasons": {
+      "post": {
+        "tags": ["Reasons"],
+        "summary": "Crée une nouvelle raison",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": { "type": "string" }
+                },
+                "required": ["name"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": { "description": "Raison créée" }
+        }
+      },
+      "get": {
+        "tags": ["Reasons"],
+        "summary": "Récupère toutes les raisons",
+        "responses": {
+          "200": { "description": "Liste des raisons" }
+        }
+      }
+    },
+    "/reasons/{reasonID}": {
+      "get": {
+        "tags": ["Reasons"],
+        "summary": "Récupère une raison par ID",
+        "parameters": [
+          { "name": "reasonID", "in": "path", "required": true, "schema": { "type": "integer" } }
+        ],
+        "responses": {
+          "200": { "description": "Raison trouvée" },
+          "404": { "description": "Raison non trouvée" }
+        }
+      },
+      "patch": {
+        "tags": ["Reasons"],
+        "summary": "Met à jour une raison",
+        "parameters": [
+          { "name": "reasonID", "in": "path", "required": true, "schema": { "type": "integer" } }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": { "type": "string" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "Raison mise à jour" }
+        }
+      },
+      "delete": {
+        "tags": ["Reasons"],
+        "summary": "Supprime une raison",
+        "parameters": [
+          { "name": "reasonID", "in": "path", "required": true, "schema": { "type": "integer" } }
+        ],
+        "responses": {
+          "200": { "description": "Raison supprimée" }
+        }
+      }
+    },
+    "/sleeps": {
+      "post": {
+        "tags": ["Sleeps"],
+        "summary": "Crée un nouveau sommeil",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "quality": { "type": "integer", "minimum": 1, "maximum": 5 }
+                },
+                "required": ["quality"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": { "description": "Sommeil créé" }
+        }
+      },
+      "get": {
+        "tags": ["Sleeps"],
+        "summary": "Récupère tous les sommeils",
+        "responses": {
+          "200": { "description": "Liste des sommeils" }
+        }
+      }
+    },
+    "/sleeps/{sleepID}": {
+      "get": {
+        "tags": ["Sleeps"],
+        "summary": "Récupère un sommeil par ID",
+        "parameters": [
+          { "name": "sleepID", "in": "path", "required": true, "schema": { "type": "integer" } }
+        ],
+        "responses": {
+          "200": { "description": "Sommeil trouvé" },
+          "404": { "description": "Sommeil non trouvé" }
+        }
+      },
+      "patch": {
+        "tags": ["Sleeps"],
+        "summary": "Met à jour un sommeil",
+        "parameters": [
+          { "name": "sleepID", "in": "path", "required": true, "schema": { "type": "integer" } }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "quality": { "type": "integer", "minimum": 1, "maximum": 5 }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "Sommeil mis à jour" }
+        }
+      },
+      "delete": {
+        "tags": ["Sleeps"],
+        "summary": "Supprime un sommeil",
+        "parameters": [
+          { "name": "sleepID", "in": "path", "required": true, "schema": { "type": "integer" } }
+        ],
+        "responses": {
+          "200": { "description": "Sommeil supprimé" }
+        }
+      }
+    },
+    "/journals": {
+      "post": {
+        "tags": ["Journals"],
+        "summary": "Crée un nouveau journal",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "content": { "type": "string" }
+                },
+                "required": ["content"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": { "description": "Journal créé" }
+        }
+      },
+      "get": {
+        "tags": ["Journals"],
+        "summary": "Récupère tous les journaux",
+        "responses": {
+          "200": { "description": "Liste des journaux" }
+        }
+      }
+    },
+    "/journals/{journalID}": {
+      "get": {
+        "tags": ["Journals"],
+        "summary": "Récupère un journal par ID",
+        "parameters": [
+          { "name": "journalID", "in": "path", "required": true, "schema": { "type": "integer" } }
+        ],
+        "responses": {
+          "200": { "description": "Journal trouvé" },
+          "404": { "description": "Journal non trouvé" }
+        }
+      },
+      "patch": {
+        "tags": ["Journals"],
+        "summary": "Met à jour un journal",
+        "parameters": [
+          { "name": "journalID", "in": "path", "required": true, "schema": { "type": "integer" } }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "content": { "type": "string" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "Journal mis à jour" }
+        }
+      },
+      "delete": {
+        "tags": ["Journals"],
+        "summary": "Supprime un journal",
+        "parameters": [
+          { "name": "journalID", "in": "path", "required": true, "schema": { "type": "integer" } }
+        ],
+        "responses": {
+          "200": { "description": "Journal supprimé" }
+        }
+      }
+    },
+    "/moods": {
+      "post": {
+        "tags": ["Moods"],
+        "summary": "Crée une nouvelle humeur",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "value": { "type": "integer", "minimum": 1, "maximum": 5 }
+                },
+                "required": ["value"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": { "description": "Humeur créée" }
+        }
+      },
+      "get": {
+        "tags": ["Moods"],
+        "summary": "Récupère toutes les humeurs",
+        "responses": {
+          "200": { "description": "Liste des humeurs" }
+        }
+      }
+    },
+    "/moods/{moodID}": {
+      "get": {
+        "tags": ["Moods"],
+        "summary": "Récupère une humeur par ID",
+        "parameters": [
+          { "name": "moodID", "in": "path", "required": true, "schema": { "type": "integer" } }
+        ],
+        "responses": {
+          "200": { "description": "Humeur trouvée" },
+          "404": { "description": "Humeur non trouvée" }
+        }
+      },
+      "patch": {
+        "tags": ["Moods"],
+        "summary": "Met à jour une humeur",
+        "parameters": [
+          { "name": "moodID", "in": "path", "required": true, "schema": { "type": "integer" } }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "value": { "type": "integer", "minimum": 1, "maximum": 5 }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "Humeur mise à jour" }
+        }
+      },
+      "delete": {
+        "tags": ["Moods"],
+        "summary": "Supprime une humeur",
+        "parameters": [
+          { "name": "moodID", "in": "path", "required": true, "schema": { "type": "integer" } }
+        ],
+        "responses": {
+          "200": { "description": "Humeur supprimée" }
+        }
+      }
+    },
+    "/emotions": {
+      "post": {
+        "tags": ["Emotions"],
+        "summary": "Crée une nouvelle émotion",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": { "type": "string" }
+                },
+                "required": ["name"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": { "description": "Émotion créée" }
+        }
+      },
+      "get": {
+        "tags": ["Emotions"],
+        "summary": "Récupère toutes les émotions",
+        "responses": {
+          "200": { "description": "Liste des émotions" }
+        }
+      }
+    },
+    "/emotions/{emotionID}": {
+      "get": {
+        "tags": ["Emotions"],
+        "summary": "Récupère une émotion par ID",
+        "parameters": [
+          { "name": "emotionID", "in": "path", "required": true, "schema": { "type": "integer" } }
+        ],
+        "responses": {
+          "200": { "description": "Émotion trouvée" },
+          "404": { "description": "Émotion non trouvée" }
+        }
+      },
+      "patch": {
+        "tags": ["Emotions"],
+        "summary": "Met à jour une émotion",
+        "parameters": [
+          { "name": "emotionID", "in": "path", "required": true, "schema": { "type": "integer" } }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": { "type": "string" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "Émotion mise à jour" }
+        }
+      },
+      "delete": {
+        "tags": ["Emotions"],
+        "summary": "Supprime une émotion",
+        "parameters": [
+          { "name": "emotionID", "in": "path", "required": true, "schema": { "type": "integer" } }
+        ],
+        "responses": {
+          "200": { "description": "Émotion supprimée" }
+        }
+      }
+    },
+    "/breathings": {
+      "post": {
+        "tags": ["Breathings"],
+        "summary": "Crée un nouvel exercice de respiration",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": { "type": "string" },
+                  "description": { "type": "string" },
+                  "duration": { "type": "integer" }
+                },
+                "required": ["name", "description", "duration"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": { "description": "Exercice de respiration créé" }
+        }
+      },
+      "get": {
+        "tags": ["Breathings"],
+        "summary": "Récupère tous les exercices de respiration",
+        "responses": {
+          "200": { "description": "Liste des exercices de respiration" }
+        }
+      }
+    },
+    "/breathings/{id}": {
+      "get": {
+        "tags": ["Breathings"],
+        "summary": "Récupère un exercice de respiration par ID",
+        "parameters": [
+          { "name": "id", "in": "path", "required": true, "schema": { "type": "integer" } }
+        ],
+        "responses": {
+          "200": { "description": "Exercice de respiration trouvé" },
+          "404": { "description": "Exercice de respiration non trouvé" }
+        }
+      },
+      "patch": {
+        "tags": ["Breathings"],
+        "summary": "Met à jour un exercice de respiration",
+        "parameters": [
+          { "name": "id", "in": "path", "required": true, "schema": { "type": "integer" } }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": { "type": "string" },
+                  "description": { "type": "string" },
+                  "duration": { "type": "integer" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "Exercice de respiration mis à jour" }
+        }
+      },
+      "delete": {
+        "tags": ["Breathings"],
+        "summary": "Supprime un exercice de respiration",
+        "parameters": [
+          { "name": "id", "in": "path", "required": true, "schema": { "type": "integer" } }
+        ],
+        "responses": {
+          "200": { "description": "Exercice de respiration supprimé" }
+        }
+      }
+    },
+    "/userBreathings": {
+      "post": {
+        "tags": ["UserBreathings"],
+        "summary": "Crée une session de respiration pour un utilisateur",
+        "security": [{ "bearerAuth": [] }],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "breathingID": { "type": "integer" },
+                  "duration": { "type": "integer" }
+                },
+                "required": ["breathingID", "duration"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": { "description": "Session de respiration créée" }
+        }
+      },
+      "get": {
+        "tags": ["UserBreathings"],
+        "summary": "Récupère toutes les sessions de respiration de l'utilisateur",
+        "security": [{ "bearerAuth": [] }],
+        "responses": {
+          "200": { "description": "Liste des sessions de respiration" }
+        }
+      }
+    },
+    "/userBreathings/{id}": {
+      "get": {
+        "tags": ["UserBreathings"],
+        "summary": "Récupère une session de respiration par ID",
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [
+          { "name": "id", "in": "path", "required": true, "schema": { "type": "integer" } }
+        ],
+        "responses": {
+          "200": { "description": "Session de respiration trouvée" },
+          "404": { "description": "Session de respiration non trouvée" }
+        }
+      },
+      "delete": {
+        "tags": ["UserBreathings"],
+        "summary": "Supprime une session de respiration",
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [
+          { "name": "id", "in": "path", "required": true, "schema": { "type": "integer" } }
+        ],
+        "responses": {
+          "200": { "description": "Session de respiration supprimée" }
+        }
+      }
+    },
+    "/badges/unlock": {
+      "post": {
+        "tags": ["Badges"],
+        "summary": "Déverrouille un badge pour l'utilisateur",
+        "security": [{ "bearerAuth": [] }],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "badgeID": { "type": "integer" }
+                },
+                "required": ["badgeID"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": { "description": "Badge déverrouillé" }
+        }
+      }
+    },
+    "/avatars": {
+      "get": {
+        "tags": ["Avatars"],
+        "summary": "Récupère tous les avatars disponibles",
+        "responses": {
+          "200": { "description": "Liste des avatars" }
+        }
+      }
+    },
+    "/challenges": {
+      "post": {
+        "tags": ["Challenges"],
+        "summary": "Crée un nouveau défi",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "title": { "type": "string" },
+                  "description": { "type": "string" },
+                  "duration": { "type": "integer" }
+                },
+                "required": ["title", "description", "duration"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": { "description": "Défi créé" }
+        }
+      },
+      "get": {
+        "tags": ["Challenges"],
+        "summary": "Récupère tous les défis",
+        "responses": {
+          "200": { "description": "Liste des défis" }
+        }
+      }
+    },
+    "/challenges/{id}": {
+      "get": {
+        "tags": ["Challenges"],
+        "summary": "Récupère un défi par ID",
+        "parameters": [
+          { "name": "id", "in": "path", "required": true, "schema": { "type": "integer" } }
+        ],
+        "responses": {
+          "200": { "description": "Défi trouvé" },
+          "404": { "description": "Défi non trouvé" }
+        }
+      },
+      "patch": {
+        "tags": ["Challenges"],
+        "summary": "Met à jour un défi",
+        "parameters": [
+          { "name": "id", "in": "path", "required": true, "schema": { "type": "integer" } }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "title": { "type": "string" },
+                  "description": { "type": "string" },
+                  "duration": { "type": "integer" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "Défi mis à jour" }
+        }
+      },
+      "delete": {
+        "tags": ["Challenges"],
+        "summary": "Supprime un défi",
+        "parameters": [
+          { "name": "id", "in": "path", "required": true, "schema": { "type": "integer" } }
+        ],
+        "responses": {
+          "200": { "description": "Défi supprimé" }
+        }
+      }
+    },
+    "/challenges/current": {
+      "get": {
+        "tags": ["Challenges"],
+        "summary": "Récupère le défi actuel",
+        "responses": {
+          "200": { "description": "Défi actuel" }
+        }
+      }
+    },
+    "/tasks": {
+      "post": {
+        "tags": ["Tasks"],
+        "summary": "Crée une nouvelle tâche",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "title": { "type": "string" },
+                  "description": { "type": "string" },
+                  "challengeID": { "type": "integer" }
+                },
+                "required": ["title", "description", "challengeID"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": { "description": "Tâche créée" }
+        }
+      },
+      "get": {
+        "tags": ["Tasks"],
+        "summary": "Récupère toutes les tâches",
+        "responses": {
+          "200": { "description": "Liste des tâches" }
+        }
+      }
+    },
+    "/tasks/challenge/{id}": {
+      "get": {
+        "tags": ["Tasks"],
+        "summary": "Récupère les tâches d'un défi",
+        "parameters": [
+          { "name": "id", "in": "path", "required": true, "schema": { "type": "integer" } }
+        ],
+        "responses": {
+          "200": { "description": "Liste des tâches du défi" }
+        }
+      }
+    },
+    "/tasks/{id}": {
+      "get": {
+        "tags": ["Tasks"],
+        "summary": "Récupère une tâche par ID",
+        "parameters": [
+          { "name": "id", "in": "path", "required": true, "schema": { "type": "integer" } }
+        ],
+        "responses": {
+          "200": { "description": "Tâche trouvée" },
+          "404": { "description": "Tâche non trouvée" }
+        }
+      },
+      "patch": {
+        "tags": ["Tasks"],
+        "summary": "Met à jour une tâche",
+        "parameters": [
+          { "name": "id", "in": "path", "required": true, "schema": { "type": "integer" } }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "title": { "type": "string" },
+                  "description": { "type": "string" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "Tâche mise à jour" }
+        }
+      },
+      "delete": {
+        "tags": ["Tasks"],
+        "summary": "Supprime une tâche",
+        "parameters": [
+          { "name": "id", "in": "path", "required": true, "schema": { "type": "integer" } }
+        ],
+        "responses": {
+          "200": { "description": "Tâche supprimée" }
+        }
+      }
+    },
+    "/userTasks": {
+      "post": {
+        "tags": ["UserTasks"],
+        "summary": "Crée une tâche pour un utilisateur",
+        "security": [{ "bearerAuth": [] }],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "taskID": { "type": "integer" }
+                },
+                "required": ["taskID"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": { "description": "Tâche utilisateur créée" }
+        }
+      },
+      "get": {
+        "tags": ["UserTasks"],
+        "summary": "Récupère toutes les tâches de l'utilisateur",
+        "security": [{ "bearerAuth": [] }],
+        "responses": {
+          "200": { "description": "Liste des tâches de l'utilisateur" }
+        }
+      }
+    },
+    "/userTasks/{id}": {
+      "get": {
+        "tags": ["UserTasks"],
+        "summary": "Récupère une tâche utilisateur par ID",
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [
+          { "name": "id", "in": "path", "required": true, "schema": { "type": "integer" } }
+        ],
+        "responses": {
+          "200": { "description": "Tâche utilisateur trouvée" },
+          "404": { "description": "Tâche utilisateur non trouvée" }
+        }
+      },
+      "delete": {
+        "tags": ["UserTasks"],
+        "summary": "Supprime une tâche utilisateur",
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [
+          { "name": "id", "in": "path", "required": true, "schema": { "type": "integer" } }
+        ],
+        "responses": {
+          "200": { "description": "Tâche utilisateur supprimée" }
+        }
+      }
+    },
+    "/userChallenges": {
+      "post": {
+        "tags": ["UserChallenges"],
+        "summary": "Crée un défi pour un utilisateur",
+        "security": [{ "bearerAuth": [] }],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "challengeID": { "type": "integer" }
+                },
+                "required": ["challengeID"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": { "description": "Défi utilisateur créé" }
+        }
+      },
+      "get": {
+        "tags": ["UserChallenges"],
+        "summary": "Récupère tous les défis de l'utilisateur",
+        "security": [{ "bearerAuth": [] }],
+        "responses": {
+          "200": { "description": "Liste des défis de l'utilisateur" }
+        }
+      }
+    },
+    "/userChallenges/{id}": {
+      "delete": {
+        "tags": ["UserChallenges"],
+        "summary": "Supprime un défi utilisateur",
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [
+          { "name": "id", "in": "path", "required": true, "schema": { "type": "integer" } }
+        ],
+        "responses": {
+          "200": { "description": "Défi utilisateur supprimé" }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    }
+  },
+  "tags": [
+    { "name": "Auth", "description": "Routes d'authentification" },
+    { "name": "Users", "description": "Routes pour la gestion des utilisateurs" },
+    { "name": "Days", "description": "Routes pour la gestion des jours" },
+    { "name": "Reasons", "description": "Routes pour la gestion des raisons" },
+    { "name": "Sleeps", "description": "Routes pour la gestion du sommeil" },
+    { "name": "Journals", "description": "Routes pour la gestion des journaux" },
+    { "name": "Moods", "description": "Routes pour la gestion des humeurs" },
+    { "name": "Emotions", "description": "Routes pour la gestion des émotions" },
+    { "name": "Breathings", "description": "Routes pour la gestion des exercices de respiration" },
+    { "name": "UserBreathings", "description": "Routes pour la gestion des sessions de respiration des utilisateurs" },
+    { "name": "Badges", "description": "Routes pour la gestion des badges" },
+    { "name": "Avatars", "description": "Routes pour la gestion des avatars" },
+    { "name": "Challenges", "description": "Routes pour la gestion des défis" },
+    { "name": "Tasks", "description": "Routes pour la gestion des tâches" },
+    { "name": "UserTasks", "description": "Routes pour la gestion des tâches des utilisateurs" },
+    { "name": "UserChallenges", "description": "Routes pour la gestion des défis des utilisateurs" }
+  ]
+}
