@@ -85,7 +85,7 @@ struct BreathingController: RouteCollection {
            }
            
            guard let id = req.parameters.get("id", as: UUID.self) else {
-               throw Abort(.badRequest, reason: "Id not found")
+               throw Abort(.badRequest, reason: "ERROR: Id not found")
            }
            guard let breathing = try await Breathing.find(id, on: req.db) else {
                throw Abort(.notFound, reason: "ERROR : Breathing not found.")

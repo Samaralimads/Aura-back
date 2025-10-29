@@ -35,7 +35,6 @@ final class Challenge: Model, Content, @unchecked Sendable {
     @Siblings(through: UserChallenge.self, from: \.$challenge, to: \.$user)
     var users: [User]
     
-
     init() {}
     
     init(id: UUID? = nil, theme: String, image: String, description: String, startDate: Date, endDate: Date) {
@@ -45,5 +44,18 @@ final class Challenge: Model, Content, @unchecked Sendable {
         self.description = description
         self.startDate = startDate
         self.endDate = endDate
+    }
+}
+
+extension Challenge {
+    func ToResponse() -> ChallengeResponse {
+        ChallengeResponse(
+            id: self.id!,
+            theme: self.theme,
+            image: self.image,
+            description: self.description,
+            startDate: self.startDate,
+            endDate: self.endDate,
+        )
     }
 }
