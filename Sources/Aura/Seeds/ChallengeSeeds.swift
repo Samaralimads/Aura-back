@@ -28,7 +28,7 @@ struct ChallengeSeeds: AsyncMigration {
                 theme : "Challenge du mois",
                 image : "persoChallenge.png",
                 description : "Effectue 3 méditations",
-                startDate : formatDate(stringDate:"2025-11-01"),
+                startDate : formatDate(stringDate:"2025-10-28"),
                 endDate : formatDate(stringDate: "2025-11-28"),
             )
         ].create(on: db)

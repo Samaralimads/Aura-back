@@ -18,19 +18,10 @@ struct TaskSeeds: AsyncMigration {
             throw Abort(.internalServerError, reason: "ERROR: Challenge not found.")
         }
         
-        guard let challenge2 = try await Challenge.query(on: db)
-            .filter(\.$description == "Découvre les 3 piliers du bien-être")
-            .first() else {
-            throw Abort(.internalServerError, reason: "ERROR: Challenge not found.")
-        }
         try await [
             Task(title: "L’art de la présence en mouvement", challengeID: challenge1.id!),
             Task(title: "Méditation sur les émotions", challengeID: challenge1.id!),
             Task(title: "Gratitude : se relier à ce qui nourrit", challengeID: challenge1.id!),
-            
-            Task(title: "Fais ta première séance de respiration guidée.", challengeID: challenge2.id!),
-            Task(title: "Lance une méditation guidée et termine-la jusqu’au bout.", challengeID: challenge2.id!),
-            Task(title: "Écris ton premier texte dans le journal d’humeur.", challengeID: challenge2.id!)
             
     ].create(on: db)
 }
