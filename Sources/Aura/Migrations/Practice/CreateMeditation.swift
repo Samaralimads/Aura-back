@@ -16,6 +16,7 @@ struct CreateMeditation: AsyncMigration {
             .field("title", .string, .required)
             .field("duration", .int, .required)
             .field("image", .string)
+            .field("thumbnail", .string)
             .create()
     }
     func revert(on db: any Database) async throws {
