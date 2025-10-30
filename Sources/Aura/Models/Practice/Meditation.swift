@@ -13,16 +13,16 @@ final class Meditation: Model, Content, @unchecked Sendable {
 
     @ID(key: .id)
     var id: UUID?
-    
+
     @Field(key: "theme")
     var theme: String
 
     @Field(key: "audio")
     var audio: String
-    
+
     @Field(key: "title")
     var title: String
-    
+
     @Field(key: "duration")
     var duration: Int
 
@@ -32,14 +32,18 @@ final class Meditation: Model, Content, @unchecked Sendable {
     @Siblings(through: UserMeditation.self, from: \.$meditation, to: \.$user)
     var users: [User]
 
+    @Field(key: "thumbnail")
+    var thumbnail: String
+
     init() {}
 
-    init(id: UUID? = nil, theme: String, audio: String, title: String, duration: Int, image: String) {
+  init(id: UUID? = nil, theme: String, audio: String, title: String, duration: Int, image: String, thumbnail: String) {
         self.id = id
         self.theme = theme
         self.audio = audio
         self.title = title
         self.duration = duration
         self.image = image
+        self.thumbnail = thumbnail
     }
 }

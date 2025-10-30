@@ -19,7 +19,9 @@ func routes(_ app: Application) throws {
     try app.register(collection: TaskController())
     try app.register(collection: UserTaskController())
     try app.register(collection: UserChallengeController())
-    
+    try app.register(collection: MeditationController())
+    try app.register(collection: UserMeditationController())
+
     
     // SwaggerUI: API Docs
     app.get("docs") { req -> Response in
