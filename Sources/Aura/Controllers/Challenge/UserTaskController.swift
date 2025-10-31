@@ -21,15 +21,15 @@ struct UserTaskController: RouteCollection {
     //CREATE
     @Sendable func createUserTask(req: Request) async throws -> UserTaskResponse {
         let dto = try req.content.decode(UserTaskDTO.self)
-       guard let _ = try await UserTask.find(dto.userID, on: req.db) else {
+       guard let _ = try await User.find(dto.userID, on: req.db) else {
             throw Abort(.notFound, reason: "ERROR: User not found.")
         }
-        guard let _ = try await UserTask.find(dto.taskID, on: req.db) else {
+        guard let _ = try await Task.find(dto.taskID, on: req.db) else {
             throw Abort(.notFound, reason: "ERROR: Task not found.")
         }
         let userTask = UserTask(
             userID: dto.userID,
-            taskID: dto.taskID,
+            taskID: dto.taskID
         )
         try await userTask.save(on: req.db)
         
