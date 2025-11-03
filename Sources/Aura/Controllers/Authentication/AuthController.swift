@@ -74,6 +74,18 @@ struct AuthController: RouteCollection {
         
         try await user.save(on: req.db)
         
+        let badgeIDs = [
+            UUID(uuidString: "11111111-1111-1111-1111-111111111111")!,
+            UUID(uuidString: "22222222-2222-2222-2222-222222222222")!,
+            UUID(uuidString: "33333333-3333-3333-3333-333333333333")!
+        ]
+        
+        for badgeID in badgeIDs {
+            let userBadge = UserBadge(userID: try user.requireID(), badgeID: badgeID)
+            try await userBadge.save(on: req.db)
+        }
+
+        
         let token = try UserPayload.generateJWT(for: user, on: req)
         
         let response = UserLoginResponse(
