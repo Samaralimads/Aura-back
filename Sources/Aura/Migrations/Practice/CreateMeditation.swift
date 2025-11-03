@@ -16,10 +16,22 @@ struct CreateMeditation: AsyncMigration {
             .field("title", .string, .required)
             .field("duration", .int, .required)
             .field("image", .string)
-            .field("thumbnail", .string)
             .create()
     }
     func revert(on db: any Database) async throws {
         try await db.schema(Meditation.schema).delete()
+    }
+}
+
+struct UpdateMeditation: AsyncMigration {
+    func prepare(on db:any Database) async throws {
+        try await db.schema(Meditation.schema)
+            .field("thumbnail", .string)
+            .update()
+    }
+    func revert(on db: any Database) async throws {
+        try await db.schema(Meditation.schema)
+            .deleteField("thumbnail")
+            .update()
     }
 }

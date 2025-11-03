@@ -43,6 +43,7 @@ public func configure(_ app: Application) async throws {
     
     // MARK: - Migrations Practice
     app.migrations.add(CreateMeditation())
+    app.migrations.add(UpdateMeditation())
     app.migrations.add(CreateUserMeditation())
     app.migrations.add(CreateBreathing())
     app.migrations.add(DeleteType())
