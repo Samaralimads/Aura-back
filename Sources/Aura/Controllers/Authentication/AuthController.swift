@@ -33,12 +33,12 @@ struct AuthController: RouteCollection {
         guard let user = try await User.query(on: req.db)
             .filter(\.$email == loginData.email)
             .first() else {
-            throw Abort(.unauthorized, reason: "Email not found")
+            throw Abort(.unauthorized, reason: "Email non trouvé")
         }
         
         let isValidPassword = try Bcrypt.verify(loginData.password, created: user.password)
         if !isValidPassword {
-            throw Abort(.unauthorized, reason: "Incorrect password")
+            throw Abort(.unauthorized, reason: "Mot de passe incorrect")
         }
         
         let token = try UserPayload.generateJWT(for: user, on: req)
@@ -62,7 +62,7 @@ struct AuthController: RouteCollection {
         guard try await User.query(on: req.db)
             .filter(\.$email == registerData.email)
             .first() == nil else {
-            throw Abort(.conflict, reason: "Email already exists")
+            throw Abort(.conflict, reason: "Email déjà utilisé")
         }
         
         let user = User(

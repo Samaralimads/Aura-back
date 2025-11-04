@@ -30,6 +30,8 @@ Aura-back/
 │       ├── Middleware/
 │       ├── Migrations/
 │       ├── Models/
+│       ├── Seeds/
+│       ├── Validators/
 │       ├── configure.swift
 │       ├── routes.swift
 │       └── entrypoint.swift
