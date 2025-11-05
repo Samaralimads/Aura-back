@@ -11,7 +11,12 @@ import JWT
 
 struct AuthController: RouteCollection {
     static let defaultAvatar = "avatars/default.png"
-
+    private static let defaultBadgeIDs: [UUID] = [
+        UUID(uuidString: "11111111-1111-1111-1111-111111111111")!,
+        UUID(uuidString: "22222222-2222-2222-2222-222222222222")!,
+        UUID(uuidString: "33333333-3333-3333-3333-333333333333")!
+    ]
+    
     func boot(routes: any RoutesBuilder) throws {
         // MARK: - Public Auth Routes
         let auth = routes.grouped("auth")
@@ -25,7 +30,6 @@ struct AuthController: RouteCollection {
     
     @Sendable
     func login(req: Request) async throws -> Response {
-        
         let loginData = try req.content.decode(UserLoginDTO.self)
         
         try UserLoginDTO.validate(content: req)
@@ -41,8 +45,9 @@ struct AuthController: RouteCollection {
             throw Abort(.unauthorized, reason: "Mot de passe incorrect")
         }
         
-        let token = try UserPayload.generateJWT(for: user, on: req)
+        try await unlockDefaultBadges(for: user, on: req)
         
+        let token = try UserPayload.generateJWT(for: user, on: req)
         
         let response = UserLoginResponse(
             token: token,
@@ -54,7 +59,6 @@ struct AuthController: RouteCollection {
     
     @Sendable
     func register(req: Request) async throws -> Response {
-        
         let registerData = try req.content.decode(UserRegisterDTO.self)
         
         try UserRegisterDTO.validate(content: req)
@@ -74,17 +78,7 @@ struct AuthController: RouteCollection {
         
         try await user.save(on: req.db)
         
-        let badgeIDs = [
-            UUID(uuidString: "11111111-1111-1111-1111-111111111111")!,
-            UUID(uuidString: "22222222-2222-2222-2222-222222222222")!,
-            UUID(uuidString: "33333333-3333-3333-3333-333333333333")!
-        ]
-        
-        for badgeID in badgeIDs {
-            let userBadge = UserBadge(userID: try user.requireID(), badgeID: badgeID)
-            try await userBadge.save(on: req.db)
-        }
-
+        try await unlockDefaultBadges(for: user, on: req)
         
         let token = try UserPayload.generateJWT(for: user, on: req)
         
@@ -94,6 +88,13 @@ struct AuthController: RouteCollection {
         )
         
         return try await response.encodeResponse(status: .created, for: req)
+    }
+    
+    private func unlockDefaultBadges(for user: User, on req: Request) async throws {
+        for badgeID in Self.defaultBadgeIDs {
+            let userBadge = UserBadge(userID: try user.requireID(), badgeID: badgeID)
+            try await userBadge.save(on: req.db)
+        }
     }
 }
 
