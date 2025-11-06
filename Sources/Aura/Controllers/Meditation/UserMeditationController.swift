@@ -19,23 +19,31 @@ struct UserMeditationController: RouteCollection {
 
     // ADD
     @Sendable
-    func addMeditationToUser(req: Request) async throws -> HTTPStatus {
-        struct Input: Content {
-            let userID: UUID
-            let meditationID: UUID
-        }
-        let input = try req.content.decode(Input.self)
+      func addMeditationToUser(req: Request) async throws -> UserMeditationResponse {
+          struct Input: Content {
+              let userID: UUID
+              let meditationID: UUID
+          }
+          let input = try req.content.decode(Input.self)
 
-        guard let user = try await User.find(input.userID, on: req.db) else {
-            throw Abort(.notFound, reason: "User not found")
-        }
-        guard let meditation = try await Meditation.find(input.meditationID, on: req.db) else {
-            throw Abort(.notFound, reason: "Meditation not found")
-        }
+          guard let user = try await User.find(input.userID, on: req.db) else {
+              throw Abort(.notFound, reason: "User not found")
+          }
+          guard let meditation = try await Meditation.find(input.meditationID, on: req.db) else {
+              throw Abort(.notFound, reason: "Meditation not found")
+          }
+          let userMeditation = UserMeditation(
+            userID: input.userID,
+            meditationID: input.meditationID,
+            date: Date()
+          )
+        try await userMeditation.save(on: req.db)
 
-        try await user.$meditations.attach(meditation, on: req.db)
-        return .created
-    }
+        try await userMeditation.$user.load(on: req.db)
+        try await userMeditation.$meditation.load(on: req.db)
+
+        return userMeditation.toDTO()
+      }
 
     // GET
     @Sendable
